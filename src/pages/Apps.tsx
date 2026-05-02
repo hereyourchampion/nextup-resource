@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import BottomNav from "@/components/BottomNav";
 import SquigglyUnderline from "@/components/SquigglyUnderline";
+import FeaturedCollections from "@/components/FeaturedCollections";
 import { useEffect, useState } from "react";
 import { updatePageMeta, pageSEOConfigs } from "@/lib/og-image";
 import { useStudyMode } from "@/hooks/useStudyMode";
@@ -99,6 +100,12 @@ const Apps = () => {
             </div>
           </section>
         )}
+
+        <FeaturedCollections
+          title="Game Bundles"
+          subtitle="All versions of your favorite games — in one place."
+          filterSlugs={["gta-collection"]}
+        />
       </main>
       <Footer />
       <ScrollToTop />
