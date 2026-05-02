@@ -1326,6 +1326,14 @@ const resourcesData: Resource[] = [
     link: "https://drive.google.com/drive/folders/1Dbgiqt-qyTf_xRQ7l_HHP9PvaspfUE_y",
     dateAdded: "2026-04-01",
   },
+  {
+    title: "All Windows Cracked Software",
+    description: "Massive library of cracked Windows software — productivity, design, dev tools and more. Password: Star. Includes a video tutorial showing how to install and activate.",
+    category: "Software",
+    image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=800&auto=format&fit=crop",
+    link: "https://satvrn.li/windows",
+    dateAdded: "2026-05-02",
+  },
 ];
 
 // All ebooks (will be sorted alphabetically)
