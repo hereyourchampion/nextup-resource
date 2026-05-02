@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
+import FeaturedCollections from "@/components/FeaturedCollections";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import BottomNav from "@/components/BottomNav";
@@ -38,6 +39,7 @@ const Index = () => {
       <main>
         <Hero />
         <Marquee />
+        <FeaturedCollections />
       </main>
       <Footer />
       <ScrollToTop />
