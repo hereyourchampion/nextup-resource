@@ -1880,3 +1880,138 @@ export const allResources = resources;
 export const allEbooks = ebooks;
 export const allApps = apps;
 export const allWebsites = websites;
+
+// ============================================================
+// Collections — curated bundle pages (e.g., GTA, Placement Material, AI Tools)
+// Each collection renders on /collection/:slug
+// ============================================================
+export interface CollectionItem {
+  title: string;
+  description?: string;
+  link: string;
+  badge?: string;
+}
+
+export interface Collection {
+  slug: string;
+  title: string;
+  tagline: string;
+  description: string;
+  emoji: string;
+  accent: "primary" | "secondary" | "tertiary" | "quaternary";
+  items: CollectionItem[];
+}
+
+export const collections: Collection[] = [
+  {
+    slug: "placement-material",
+    title: "All Company Paid Placement Material",
+    tagline: "Crack any company. Free.",
+    description: "Premium paid placement material for top companies and aptitude exams — TCS, CTS, Tech Mahindra, Infosys, Mindtree, Value Labs, Mphasis and more. Plus aptitude prep for AMCAT, eLitmus, GATE and HR/TR rounds.",
+    emoji: "💼",
+    accent: "primary",
+    items: [
+      { title: "TCS", description: "Tata Consultancy Services placement material", link: "https://drive.google.com/open?id=1XN8w1Q9akk1IagpaSPDKVowlVCQJ1tV8", badge: "Drive" },
+      { title: "CTS", description: "Cognizant placement material", link: "https://drive.google.com/open?id=1a-HWjvdfAb4t3xo0O_R8_kwlqGs6Ipt-", badge: "Drive" },
+      { title: "TEK Systems", description: "TEK Systems prep material", link: "https://bit.ly/37SKG1Y", badge: "Link" },
+      { title: "Tech Mahindra", description: "Tech Mahindra placement papers", link: "https://drive.google.com/open?id=1ltJ4CSu-6rSCOgjLKtFC6LIwfVej5NXl", badge: "Drive" },
+      { title: "Infosys", description: "Infosys placement material", link: "https://drive.google.com/open?id=1A0so4BGzkynu4k9T0hl-c6yokMBlMQiF", badge: "Drive" },
+      { title: "Mindtree", description: "Mindtree placement papers", link: "https://drive.google.com/open?id=1dkBNs61BGmaQ8bvMDMlNO2ENDtCcNSdp", badge: "Drive" },
+      { title: "Value Labs", description: "Value Labs placement material", link: "https://drive.google.com/open?id=1MC6LwK5zoTIDkmjZHgm2TxnHPGxGnrHJ", badge: "Drive" },
+      { title: "Mphasis", description: "Mphasis placement papers", link: "https://drive.google.com/open?id=1s4ExADXgIicpTaNjLj5Et6yv4UaPqXaT", badge: "Drive" },
+      { title: "ZenQ", description: "ZenQ placement material", link: "https://drive.google.com/open?id=1FjZxLhhMSNhnkru1pZEGjD1-w8XJPTZQ", badge: "Drive" },
+      { title: "EPAM", description: "EPAM Systems prep material", link: "https://drive.google.com/open?id=14kYwuvk3DiCp_c67Qhdm5j8MQ9ctPmRm", badge: "Drive" },
+      { title: "GATE", description: "GATE exam preparation", link: "https://drive.google.com/open?id=1996QqgIeETZQ2o7Lpomh8-fSl49tlckz", badge: "Drive" },
+      { title: "AMCAT", description: "AMCAT aptitude prep", link: "https://drive.google.com/open?id=1vPCyQnc844BK9jsTKQ7WIzcGpx3r3J-d", badge: "Drive" },
+      { title: "eLitmus", description: "eLitmus pH test material", link: "https://drive.google.com/open?id=154gp-J7a43zDe2lwvwZPQ0uvEnU7SYF1", badge: "Drive" },
+      { title: "Talent Battle", description: "Talent Battle placement prep", link: "https://drive.google.com/open?id=1wIUuyPIS41jKHTrA_1RyMX1hBNWJ0TFS", badge: "Drive" },
+      { title: "Sample C Programs", description: "Curated C programming examples", link: "https://drive.google.com/drive/u/3/folders/1pO69Sp5N3sSKCD2GeMKUvmiOQPxQDAhU?usp=gmail", badge: "Drive" },
+      { title: "TR & HR Preparation", description: "Technical and HR interview prep", link: "https://drive.google.com/open?id=1jkLdSlyv-zAx3a8G-EZ38eXQV_AGjci4", badge: "Drive" },
+    ],
+  },
+  {
+    slug: "gta-collection",
+    title: "GTA — All Versions in One Place",
+    tagline: "Every Grand Theft Auto, ready to download.",
+    description: "The complete Grand Theft Auto collection across mobile and PC — definitive editions, classics, and the latest releases. All download links curated in one place.",
+    emoji: "🎮",
+    accent: "secondary",
+    items: [
+      { title: "GTA 5 (Mobile)", description: "Grand Theft Auto V mobile version with online multiplayer.", link: "https://dl.apkvision.org/Grand-Theft-Auto-V-0.3-Test.apk", badge: "APK" },
+      { title: "GTA 3 Definitive Edition", description: "Remastered GTA III with enhanced visuals.", link: "https://dl.apkvision.org/gta-iii-definitive/GTA-III-Definitive-v1.84.3-full-apkvision.apk", badge: "APK" },
+      { title: "GTA Vice City Definitive Edition", description: "Definitive edition of the classic Vice City.", link: "https://t.me/nextupfilebot?start=BQADAQADBxAAArBhaUQrqKqmRHeb8RYE", badge: "Telegram" },
+      { title: "GTA Vice City Definitive (APK)", description: "Direct APK install for Android.", link: "https://dl.apkvision.org/gta-vice-city-definitive/GTA-Vice-City-Definitive-v1.90.0-full-apkvision.apk", badge: "APK" },
+      { title: "GTA San Andreas Definitive Edition", description: "Remastered San Andreas for mobile.", link: "https://dl.apkvision.org/gta-san-andreas-definitive/GTA-SA-Definitive-v1.87.0-full-apkvision.apks", badge: "APK" },
+      { title: "GTA Liberty City Stories", description: "Classic prequel with open-world gameplay.", link: "https://dl.apkvision.org/gta-liberty-city-stories/GTA-LCS-v2.4.362-mod-apkvision.apk", badge: "APK" },
+      { title: "GTA Chinatown Wars", description: "Top-down GTA with engaging story.", link: "https://dl.apkvision.org/gta-chinatown-wars/GTA-CTW-v4.4.221-full-apkvision.apk", badge: "APK" },
+      { title: "GTA III Definitive Edition (PC)", description: "Fully remastered GTA III for PC.", link: "https://gofile.io/d/PK0OMw?utm_source=tg&utm_campaign=pcgames_freedownload&utm_medium=content&utm_term=12159", badge: "PC" },
+    ],
+  },
+  {
+    slug: "ai-tools-everyone",
+    title: "30 Must-Know AI Tools Everyone Can Use",
+    tagline: "One tool for every job.",
+    description: "A curated map of 30 essential AI tools — match the task to the perfect tool. From content writing and design to voiceovers, presentations and no-code websites.",
+    emoji: "🤖",
+    accent: "tertiary",
+    items: [
+      { title: "ChatGPT", description: "You need content writing", link: "https://chat.openai.com" },
+      { title: "Canva", description: "You need graphic design", link: "https://www.canva.com" },
+      { title: "Looka", description: "You need a brand logo", link: "https://looka.com" },
+      { title: "TLDR This", description: "You need summarization", link: "https://tldrthis.com" },
+      { title: "Ubersuggest", description: "You need SEO support", link: "https://neilpatel.com/ubersuggest" },
+      { title: "Grammarly", description: "You need grammar correction", link: "https://www.grammarly.com" },
+      { title: "Ideogram", description: "You need visual assets", link: "https://ideogram.ai" },
+      { title: "Adobe Enhance", description: "You need audio cleanup", link: "https://podcast.adobe.com/enhance" },
+      { title: "Whisper by OpenAI", description: "You need transcripts", link: "https://openai.com/research/whisper" },
+      { title: "StudyPal", description: "You need better study notes", link: "https://studypal.ai" },
+      { title: "Top AI Jobs", description: "You need job opportunities", link: "https://topai.tools/jobs" },
+      { title: "Perplexity AI", description: "You need deep research", link: "https://www.perplexity.ai" },
+      { title: "SlidesAI", description: "You need presentations", link: "https://www.slidesai.io" },
+      { title: "Durable", description: "You need a no-code website", link: "https://durable.co" },
+      { title: "Mindgrasp", description: "You need mind mapping", link: "https://mindgrasp.ai" },
+      { title: "Writesonic", description: "You need video scripts", link: "https://writesonic.com" },
+      { title: "Kickresume", description: "You need resumes & cover letters", link: "https://www.kickresume.com" },
+      { title: "Claude AI", description: "You need feedback & summarization", link: "https://claude.ai" },
+      { title: "n8n", description: "You need automation workflows", link: "https://n8n.io" },
+      { title: "Phind", description: "You need help with coding", link: "https://www.phind.com" },
+      { title: "Synthesia", description: "You need AI avatars", link: "https://www.synthesia.io" },
+      { title: "Namelix", description: "You need a business name", link: "https://namelix.com" },
+      { title: "Copy.ai", description: "You need social media posts", link: "https://www.copy.ai" },
+      { title: "HeyGen", description: "You need talking head videos", link: "https://www.heygen.com" },
+      { title: "ElevenLabs", description: "You need quick voiceovers", link: "https://elevenlabs.io" },
+      { title: "VoicePen", description: "You need AI voice typing", link: "https://voicepen.ai" },
+      { title: "Leonardo AI", description: "You need to generate images", link: "https://leonardo.ai" },
+      { title: "Humata AI", description: "You need to analyze PDFs", link: "https://www.humata.ai" },
+      { title: "Botpress", description: "You need chatbot creation", link: "https://botpress.com" },
+      { title: "Eightify", description: "You need to summarize YouTube videos", link: "https://eightify.app" },
+    ],
+  },
+  {
+    slug: "ai-tools-for-everything",
+    title: "AI Tools for Everything",
+    tagline: "Pair the right input with the right tool.",
+    description: "A formula-style cheat sheet — combine your input (text, voice, files, ideas) with the right AI tool to get the perfect output. From blog posts to AI artwork to automated workflows.",
+    emoji: "✨",
+    accent: "quaternary",
+    items: [
+      { title: "Text → ChatGPT", description: "Blog posts, emails, captions", link: "https://chat.openai.com" },
+      { title: "Docs → Jasper AI", description: "Landing pages, ad copy", link: "https://www.jasper.ai" },
+      { title: "Dashboards → Obviously.ai", description: "No-code predictions & insights", link: "https://www.obviously.ai" },
+      { title: "Script → Synthesia", description: "AI-generated videos with avatars", link: "https://www.synthesia.io" },
+      { title: "Voice → ElevenLabs", description: "Realistic human-like audio", link: "https://elevenlabs.io" },
+      { title: "Manual Tasks → Make.com", description: "Automated workflows", link: "https://www.make.com" },
+      { title: "Prompts → Midjourney", description: "Stunning AI artwork", link: "https://www.midjourney.com" },
+      { title: "Notes → Mem.ai", description: "Smart knowledge organization", link: "https://mem.ai" },
+      { title: "Files → Docparser", description: "Structured data extraction", link: "https://docparser.com" },
+      { title: "Audio → Descript", description: "Podcasts, transcripts, shorts", link: "https://www.descript.com" },
+      { title: "Invoices → Parseur", description: "Auto-filled Excel sheets", link: "https://parseur.com" },
+      { title: "Ideas → Notion AI", description: "Meeting notes, brainstorms, docs", link: "https://www.notion.so/product/ai" },
+      { title: "Text Prompts → Runway ML", description: "AI video & motion graphics", link: "https://runwayml.com" },
+      { title: "Data → MonkeyLearn", description: "Text classification & sentiment analysis", link: "https://monkeylearn.com" },
+    ],
+  },
+];
+
+export const getCollection = (slug: string): Collection | undefined =>
+  collections.find((c) => c.slug === slug);
