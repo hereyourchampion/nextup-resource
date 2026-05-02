@@ -4,6 +4,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import BottomNav from "@/components/BottomNav";
 import SquigglyUnderline from "@/components/SquigglyUnderline";
 import AIToolBottomSheet from "@/components/AIToolBottomSheet";
+import FeaturedCollections from "@/components/FeaturedCollections";
 import { aiTools, AITool } from "@/data/aiTools";
 import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
