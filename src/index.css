@@ -252,6 +252,49 @@
     100% { opacity: 1; transform: translateY(0) scale(1); }
   }
 
+  /* Memphis Group dashed grid connectors — dashed lines between adjacent cards */
+  .dashed-grid {
+    position: relative;
+  }
+  .dashed-grid > * {
+    position: relative;
+  }
+  /* Horizontal dashed connector — appears to the right of every card except the last in row */
+  @media (min-width: 768px) {
+    .dashed-grid.cols-2 > *:not(:nth-child(2n))::after,
+    .dashed-grid.cols-3 > *:not(:nth-child(2n))::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -2rem;
+      width: 2rem;
+      height: 0;
+      border-top: 2px dashed hsl(var(--foreground) / 0.35);
+      pointer-events: none;
+      z-index: 0;
+    }
+  }
+  @media (min-width: 1024px) {
+    .dashed-grid.cols-3 > *:not(:nth-child(3n))::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -2rem;
+      width: 2rem;
+      height: 0;
+      border-top: 2px dashed hsl(var(--foreground) / 0.35);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .dashed-grid.cols-3 > *:nth-child(2n):not(:nth-child(3n))::after {
+      display: none;
+    }
+  }
+  /* Reduced motion: keep static, no shimmer */
+  @media (prefers-reduced-motion: reduce) {
+    .dashed-grid > *::after { opacity: 0.5; }
+  }
+
   /* Nav link pill hover */
   .nav-pill {
     @apply relative px-4 py-2 rounded-full text-sm font-medium;
