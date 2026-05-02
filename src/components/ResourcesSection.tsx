@@ -51,13 +51,13 @@ const ResourcesSection = () => {
             Object.entries(grouped).map(([category, items]) => (
               <div key={category} className="mb-10">
                 <h3 className="text-xl font-bold text-foreground mb-5 px-1 font-heading">{category}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pop-stagger">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-x-12 lg:gap-x-16 pop-stagger dashed-grid cols-3">
                   {items.map((resource, index) => <ResourceCard key={index} {...resource} />)}
                 </div>
               </div>
             ))
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pop-stagger">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-x-12 lg:gap-x-16 pop-stagger dashed-grid cols-3">
               {filteredResources.map((resource, index) => <ResourceCard key={index} {...resource} />)}
             </div>
           )
