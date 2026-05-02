@@ -1,6 +1,7 @@
-import { Clock, Users, ExternalLink } from "lucide-react";
+import { Clock, Users, ExternalLink, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import FavoriteButton from "./FavoriteButton";
 import PlatformBadge from "./PlatformBadge";
 import NewBadge from "./NewBadge";
@@ -21,9 +22,16 @@ const categoryColors = ["bg-primary", "bg-secondary", "bg-tertiary", "bg-quatern
 
 const CourseCard = ({ title, description, category, duration, students, image, link, dateAdded }: CourseCardProps) => {
   const { isFavorite, toggleFavorite } = useFavorites();
+  const navigate = useNavigate();
   const courseId = generateId(title);
   const isCourseFavorite = isFavorite(courseId, "course");
   const colorIndex = category.length % categoryColors.length;
+  const isInternal = link.startsWith("/");
+
+  const handleAccess = () => {
+    if (isInternal) navigate(link);
+    else window.open(link, "_blank");
+  };
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -64,9 +72,9 @@ const CourseCard = ({ title, description, category, duration, students, image, l
             <Users className="h-3.5 w-3.5" strokeWidth={2.5} /> {students}
           </span>
         </div>
-        <Button className="w-full" onClick={() => window.open(link, "_blank")}>
-          <ExternalLink className="h-4 w-4 mr-2" strokeWidth={2.5} />
-          Access Course
+        <Button className="w-full" onClick={handleAccess}>
+          {isInternal ? <ArrowRight className="h-4 w-4 mr-2" strokeWidth={2.5} /> : <ExternalLink className="h-4 w-4 mr-2" strokeWidth={2.5} />}
+          {isInternal ? "View Collection" : "Access Course"}
         </Button>
       </div>
     </div>
