@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import CoursesSection from "@/components/CoursesSection";
 import Marquee from "@/components/Marquee";
+import FeaturedCollections from "@/components/FeaturedCollections";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import BottomNav from "@/components/BottomNav";
@@ -43,6 +44,11 @@ const Courses = () => {
           </div>
         </section>
         <Marquee />
+        <FeaturedCollections
+          title="Special Courses & Bundles"
+          subtitle="Hand-picked mega-bundles — every link in one place."
+          filterSlugs={["placement-material"]}
+        />
         <CoursesSection />
       </main>
       <Footer />
