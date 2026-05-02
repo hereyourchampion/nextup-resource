@@ -17,6 +17,7 @@ const Install = lazy(() => import("./pages/Install"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const AI = lazy(() => import("./pages/AI"));
+const CollectionPage = lazy(() => import("./pages/CollectionPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,6 +67,7 @@ const App = () => {
                 <Route path="/install" element={<Install />} />
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/ai" element={<AI />} />
+                <Route path="/collection/:slug" element={<CollectionPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
