@@ -5,14 +5,17 @@ import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import BottomNav from "@/components/BottomNav";
 import SquigglyUnderline from "@/components/SquigglyUnderline";
-import { Input } from "@/components/ui/input";
+import SearchBox from "@/components/SearchBox";
+import CopyLinkButton from "@/components/CopyLinkButton";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Briefcase, ExternalLink, FolderOpen, Search, Package } from "lucide-react";
+import { ArrowLeft, Briefcase, ExternalLink, FolderOpen, Package } from "lucide-react";
 import { getCollection } from "@/data/content";
+import { useDebounced } from "@/hooks/useDebounced";
 
 const SpecialCourses = () => {
   const collection = getCollection("placement-material");
   const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounced(query, 200);
 
   useEffect(() => {
     document.title = "Special Courses — Company Placement Bundles";
@@ -20,14 +23,14 @@ const SpecialCourses = () => {
 
   const items = useMemo(() => {
     if (!collection) return [];
-    const q = query.trim().toLowerCase();
+    const q = debouncedQuery.trim().toLowerCase();
     if (!q) return collection.items;
     return collection.items.filter(
       (i) =>
         i.title.toLowerCase().includes(q) ||
         (i.description ?? "").toLowerCase().includes(q),
     );
-  }, [collection, query]);
+  }, [collection, debouncedQuery]);
 
   if (!collection) return null;
 
@@ -50,14 +53,12 @@ const SpecialCourses = () => {
                 Premium paid placement material for top companies and aptitude exams — all in one place.
               </p>
 
-              <div className="mt-7 max-w-xl mx-auto relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" strokeWidth={2.5} />
-                <Input
+              <div className="mt-7 max-w-xl mx-auto">
+                <SearchBox
                   value={query}
-                  onChange={(e) => setQuery(e.target.value)}
+                  onChange={setQuery}
                   placeholder="Search companies (TCS, Infosys, GATE...)"
-                  className="pl-12"
-                  aria-label="Search placement bundles"
+                  ariaLabel="Search placement bundles"
                 />
               </div>
 
@@ -93,16 +94,19 @@ const SpecialCourses = () => {
                     {item.description && (
                       <p className="text-muted-foreground text-sm flex-1 mb-4">{item.description}</p>
                     )}
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 mt-auto px-4 py-2.5 rounded-full bg-primary text-primary-foreground font-bold border-2 border-foreground/80 shadow-pop hover:-translate-y-0.5 transition-transform text-sm"
-                    >
-                      <FolderOpen className="w-4 h-4" strokeWidth={2.5} />
-                      <span>{item.badge === "Drive" ? "Open folder" : "Access link"}</span>
-                      <ExternalLink className="w-3.5 h-3.5" strokeWidth={2.5} />
-                    </a>
+                    <div className="flex items-center gap-2 mt-auto">
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-primary text-primary-foreground font-bold border-2 border-foreground/80 shadow-pop hover:-translate-y-0.5 transition-transform text-sm"
+                      >
+                        <FolderOpen className="w-4 h-4" strokeWidth={2.5} />
+                        <span>{item.badge === "Drive" ? "Open folder" : "Access link"}</span>
+                        <ExternalLink className="w-3.5 h-3.5" strokeWidth={2.5} />
+                      </a>
+                      <CopyLinkButton url={item.link} />
+                    </div>
                   </div>
                 ))}
               </div>

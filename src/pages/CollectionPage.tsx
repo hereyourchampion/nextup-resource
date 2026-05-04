@@ -6,6 +6,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import BottomNav from "@/components/BottomNav";
 import SquigglyUnderline from "@/components/SquigglyUnderline";
 import PlatformBadge from "@/components/PlatformBadge";
+import CopyLinkButton from "@/components/CopyLinkButton";
 import { ArrowLeft, ExternalLink, Sparkles, Package } from "lucide-react";
 import { getCollection } from "@/data/content";
 
@@ -99,8 +100,9 @@ const CollectionPage = () => {
                   {item.description && (
                     <p className="text-muted-foreground text-sm flex-1">{item.description}</p>
                   )}
-                  <div className="mt-4">
+                  <div className="mt-4 flex items-center justify-between gap-2">
                     <PlatformBadge link={item.link} className="!relative !bottom-auto !right-auto inline-flex" />
+                    <CopyLinkButton url={item.link} />
                   </div>
                 </a>
               ))}

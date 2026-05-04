@@ -65,45 +65,46 @@
   }
 
   .dark {
-    --background: 225 30% 6%;
-    --foreground: 210 25% 92%;
+    /* Refined deep-violet midnight palette with warmer accents */
+    --background: 240 30% 5%;
+    --foreground: 220 20% 96%;
 
-    --card: 225 25% 10%;
-    --card-foreground: 210 25% 92%;
+    --card: 240 28% 9%;
+    --card-foreground: 220 20% 96%;
 
-    --popover: 225 25% 10%;
-    --popover-foreground: 210 25% 92%;
+    --popover: 240 28% 9%;
+    --popover-foreground: 220 20% 96%;
 
-    --primary: 262 83% 72%;
-    --primary-foreground: 225 30% 6%;
+    --primary: 268 95% 75%;
+    --primary-foreground: 240 30% 5%;
 
-    --secondary: 330 80% 72%;
-    --secondary-foreground: 225 30% 6%;
+    --secondary: 335 92% 74%;
+    --secondary-foreground: 240 30% 5%;
 
-    --muted: 225 20% 15%;
-    --muted-foreground: 215 15% 55%;
+    --muted: 240 20% 14%;
+    --muted-foreground: 220 14% 68%;
 
-    --accent: 262 83% 72%;
-    --accent-foreground: 225 30% 6%;
+    --accent: 268 95% 75%;
+    --accent-foreground: 240 30% 5%;
 
-    --tertiary: 43 90% 52%;
-    --tertiary-foreground: 225 30% 6%;
+    --tertiary: 43 96% 62%;
+    --tertiary-foreground: 240 30% 5%;
 
-    --quaternary: 160 60% 48%;
-    --quaternary-foreground: 225 30% 6%;
+    --quaternary: 165 78% 55%;
+    --quaternary-foreground: 240 30% 5%;
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 210 25% 92%;
+    --destructive: 0 80% 62%;
+    --destructive-foreground: 220 20% 96%;
 
-    --border: 225 15% 18%;
-    --input: 225 20% 14%;
-    --ring: 262 83% 72%;
+    --border: 240 18% 22%;
+    --input: 240 22% 12%;
+    --ring: 268 95% 75%;
 
-    --pop-shadow-color: 262 60% 50%;
-    --pop-shadow: 4px 4px 0px 0px hsl(var(--pop-shadow-color) / 0.4);
-    --pop-shadow-hover: 6px 6px 0px 0px hsl(var(--pop-shadow-color) / 0.5);
-    --pop-shadow-active: 2px 2px 0px 0px hsl(var(--pop-shadow-color) / 0.3);
-    --pop-shadow-soft: 6px 6px 0px 0px hsl(var(--border));
+    --pop-shadow-color: 268 80% 58%;
+    --pop-shadow: 4px 4px 0px 0px hsl(var(--pop-shadow-color) / 0.55);
+    --pop-shadow-hover: 6px 6px 0px 0px hsl(var(--pop-shadow-color) / 0.7);
+    --pop-shadow-active: 2px 2px 0px 0px hsl(var(--pop-shadow-color) / 0.45);
+    --pop-shadow-soft: 6px 6px 0px 0px hsl(var(--pop-shadow-color) / 0.35);
 
     --sidebar-background: 225 30% 8%;
     --sidebar-foreground: 210 25% 92%;
