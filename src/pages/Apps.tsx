@@ -101,6 +101,16 @@ const Apps = () => {
           </section>
         )}
 
+        <section className="pt-4">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <a
+              href="/foss-apps"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-tertiary text-tertiary-foreground font-bold border-2 border-foreground/80 shadow-pop hover:-translate-y-0.5 transition-transform"
+            >
+              🧑‍💻 FOSS Apps — Open-Source Android →
+            </a>
+          </div>
+        </section>
         <FeaturedCollections
           title="Game Bundles"
           subtitle="All versions of your favorite games — in one place."

@@ -44,6 +44,16 @@ const Courses = () => {
           </div>
         </section>
         <Marquee />
+        <section className="pt-4">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <a
+              href="/special-courses"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-bold border-2 border-foreground/80 shadow-pop hover:-translate-y-0.5 transition-transform"
+            >
+              💼 Special Courses — Placement Bundles →
+            </a>
+          </div>
+        </section>
         <FeaturedCollections
           title="Special Courses & Bundles"
           subtitle="Hand-picked mega-bundles — every link in one place."

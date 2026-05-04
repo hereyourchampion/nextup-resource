@@ -18,6 +18,8 @@ const FAQ = lazy(() => import("./pages/FAQ"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const AI = lazy(() => import("./pages/AI"));
 const CollectionPage = lazy(() => import("./pages/CollectionPage"));
+const SpecialCourses = lazy(() => import("./pages/SpecialCourses"));
+const FossApps = lazy(() => import("./pages/FossApps"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -68,6 +70,8 @@ const App = () => {
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/ai" element={<AI />} />
                 <Route path="/collection/:slug" element={<CollectionPage />} />
+                <Route path="/special-courses" element={<SpecialCourses />} />
+                <Route path="/foss-apps" element={<FossApps />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
