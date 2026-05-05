@@ -19,6 +19,15 @@ const ShizukuApps = () => {
   const debouncedQuery = useDebounced(query, 200);
   const [activeCat, setActiveCat] = useState<string>("All");
   const [visible, setVisible] = useState(PAGE_SIZE);
+  const [loadingMore, setLoadingMore] = useState(false);
+
+  const handleLoadMore = () => {
+    setLoadingMore(true);
+    setTimeout(() => {
+      setVisible((v) => v + PAGE_SIZE);
+      setLoadingMore(false);
+    }, 350);
+  };
 
   useEffect(() => {
     document.title = "Shizuku Apps — Privileged Android Apps Without Root";
