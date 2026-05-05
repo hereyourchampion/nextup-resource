@@ -106,7 +106,24 @@ const ShizukuApps = () => {
         <section className="pb-12">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             {shown.length === 0 ? (
-              <p className="text-center text-muted-foreground">No apps match your search.</p>
+              <div className="max-w-md mx-auto text-center pop-card p-8">
+                <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-secondary text-secondary-foreground border-2 border-foreground/80 flex items-center justify-center shadow-pop">
+                  <SearchX className="w-6 h-6" strokeWidth={2.5} />
+                </div>
+                <h3 className="font-heading font-bold text-xl mb-2">No Shizuku apps found</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Try a different keyword or pick another category.
+                </p>
+                <button
+                  onClick={() => {
+                    setQuery("");
+                    setActiveCat("All");
+                  }}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-secondary text-secondary-foreground font-bold border-2 border-foreground/80 shadow-pop hover:-translate-y-0.5 transition-transform text-sm"
+                >
+                  Reset filters
+                </button>
+              </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                 {shown.map((app, idx) => (
