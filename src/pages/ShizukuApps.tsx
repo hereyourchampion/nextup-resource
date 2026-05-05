@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ExternalLink, Github, Sparkles, User, Zap, SearchX } from "lucide-react";
 import { shizukuApps } from "@/data/shizukuApps";
 import { useDebounced } from "@/hooks/useDebounced";
+import { toast } from "sonner";
 
 const PAGE_SIZE = 60;
 
