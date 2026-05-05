@@ -66,45 +66,45 @@
 
   .dark {
     /* Refined deep-violet midnight palette with warmer accents */
-    --background: 240 30% 5%;
-    --foreground: 220 20% 96%;
+    --background: 240 32% 4%;
+    --foreground: 220 25% 97%;
 
-    --card: 240 28% 9%;
-    --card-foreground: 220 20% 96%;
+    --card: 240 30% 8%;
+    --card-foreground: 220 25% 97%;
 
-    --popover: 240 28% 9%;
-    --popover-foreground: 220 20% 96%;
+    --popover: 240 30% 8%;
+    --popover-foreground: 220 25% 97%;
 
-    --primary: 268 95% 75%;
-    --primary-foreground: 240 30% 5%;
+    --primary: 268 96% 78%;
+    --primary-foreground: 240 32% 4%;
 
-    --secondary: 335 92% 74%;
-    --secondary-foreground: 240 30% 5%;
+    --secondary: 335 94% 76%;
+    --secondary-foreground: 240 32% 4%;
 
-    --muted: 240 20% 14%;
-    --muted-foreground: 220 14% 68%;
+    --muted: 240 22% 13%;
+    --muted-foreground: 220 16% 74%;
 
-    --accent: 268 95% 75%;
-    --accent-foreground: 240 30% 5%;
+    --accent: 268 96% 78%;
+    --accent-foreground: 240 32% 4%;
 
-    --tertiary: 43 96% 62%;
-    --tertiary-foreground: 240 30% 5%;
+    --tertiary: 43 98% 65%;
+    --tertiary-foreground: 240 32% 4%;
 
-    --quaternary: 165 78% 55%;
-    --quaternary-foreground: 240 30% 5%;
+    --quaternary: 165 80% 58%;
+    --quaternary-foreground: 240 32% 4%;
 
-    --destructive: 0 80% 62%;
-    --destructive-foreground: 220 20% 96%;
+    --destructive: 0 82% 65%;
+    --destructive-foreground: 220 25% 97%;
 
-    --border: 240 18% 22%;
-    --input: 240 22% 12%;
-    --ring: 268 95% 75%;
+    --border: 240 20% 24%;
+    --input: 240 24% 11%;
+    --ring: 268 96% 78%;
 
-    --pop-shadow-color: 268 80% 58%;
-    --pop-shadow: 4px 4px 0px 0px hsl(var(--pop-shadow-color) / 0.55);
-    --pop-shadow-hover: 6px 6px 0px 0px hsl(var(--pop-shadow-color) / 0.7);
-    --pop-shadow-active: 2px 2px 0px 0px hsl(var(--pop-shadow-color) / 0.45);
-    --pop-shadow-soft: 6px 6px 0px 0px hsl(var(--pop-shadow-color) / 0.35);
+    --pop-shadow-color: 268 90% 62%;
+    --pop-shadow: 4px 4px 0px 0px hsl(var(--pop-shadow-color) / 0.6);
+    --pop-shadow-hover: 6px 6px 0px 0px hsl(var(--pop-shadow-color) / 0.78);
+    --pop-shadow-active: 2px 2px 0px 0px hsl(var(--pop-shadow-color) / 0.5);
+    --pop-shadow-soft: 6px 6px 0px 0px hsl(var(--pop-shadow-color) / 0.4);
 
     --sidebar-background: 225 30% 8%;
     --sidebar-foreground: 210 25% 92%;
@@ -148,6 +148,24 @@
 }
 
 @layer utilities {
+  /* Violet haze backdrop for dark mode polish */
+  .violet-haze {
+    position: relative;
+  }
+  .dark .violet-haze::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 0%, hsl(268 96% 60% / 0.18), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 85% 10%, hsl(335 94% 65% / 0.14), transparent 60%);
+    z-index: 0;
+  }
+  .violet-haze > * {
+    position: relative;
+    z-index: 1;
+  }
   /* Dot grid background */
   .dot-grid {
     background-image: radial-gradient(circle, hsl(var(--foreground) / 0.06) 1px, transparent 1px);
