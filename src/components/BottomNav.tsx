@@ -1,5 +1,20 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Home, BookOpen, FolderOpen, Bot, Globe, BookText, Heart, Mail, HelpCircle, Download, MoreHorizontal } from "lucide-react";
+import {
+  Home,
+  BookOpen,
+  FolderOpen,
+  Bot,
+  Globe,
+  BookText,
+  Heart,
+  Mail,
+  HelpCircle,
+  Download,
+  MoreHorizontal,
+  Github,
+  Zap,
+  Briefcase,
+} from "lucide-react";
 import { useFavorites } from "@/hooks/useFavorites";
 
 const primaryLinks = [
@@ -18,17 +33,38 @@ const moreLinks = [
   { to: "/install", icon: Download, label: "Install" },
 ];
 
-const morePaths = moreLinks.map((l) => l.to);
+const miscLinks = [
+  { to: "/foss-apps", icon: Github, label: "FOSS" },
+  { to: "/shizuku-apps", icon: Zap, label: "Shizuku" },
+  { to: "/special-courses", icon: Briefcase, label: "Placement" },
+];
 
-const NavItem = ({ to, icon: Icon, label, active, badge }: { to: string; icon: any; label: string; active: boolean; badge?: number }) => (
+const morePaths = moreLinks.map((l) => l.to);
+const miscPaths = miscLinks.map((l) => l.to);
+
+const NavItem = ({
+  to,
+  icon: Icon,
+  label,
+  active,
+  badge,
+  accent = "primary",
+}: {
+  to: string;
+  icon: any;
+  label: string;
+  active: boolean;
+  badge?: number;
+  accent?: "primary" | "secondary" | "tertiary";
+}) => (
   <Link
     to={to}
     className={`relative flex flex-col items-center justify-center px-2 py-1.5 rounded-xl transition-all duration-200 ${
-      active ? "text-primary" : "text-muted-foreground"
+      active ? `text-${accent}` : "text-muted-foreground"
     }`}
   >
     {active && (
-      <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-6 h-1 rounded-full bg-primary" />
+      <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-6 h-1 rounded-full bg-${accent}`} />
     )}
     <div className="relative">
       <Icon className="w-5 h-5" strokeWidth={active ? 2.5 : 2} />
@@ -39,7 +75,7 @@ const NavItem = ({ to, icon: Icon, label, active, badge }: { to: string; icon: a
       )}
     </div>
     {active && (
-      <span className="text-[10px] font-bold text-primary mt-0.5 animate-fade-in">
+      <span className={`text-[10px] font-bold text-${accent} mt-0.5 animate-fade-in`}>
         {label}
       </span>
     )}
@@ -53,26 +89,32 @@ const BottomNav = () => {
 
   const isActive = (path: string) => location.pathname === path;
   const isOnMorePage = morePaths.includes(location.pathname);
+  const isOnMiscPage =
+    miscPaths.includes(location.pathname) ||
+    location.pathname.startsWith("/collection/");
 
-  // Secondary nav (when on a "More" page)
-  if (isOnMorePage) {
+  // Misc nav (3rd ring) — toggle goes back to primary (Home)
+  if (isOnMiscPage) {
     return (
       <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
         <div className="mx-2 mb-2 bg-card border-2 border-foreground/80 rounded-2xl shadow-pop">
-          <div className="flex items-center justify-around px-1 py-1.5" style={{ paddingBottom: 'max(0.375rem, env(safe-area-inset-bottom))' }}>
-            {moreLinks.map((link) => (
+          <div
+            className="flex items-center justify-around px-1 py-1.5"
+            style={{ paddingBottom: "max(0.375rem, env(safe-area-inset-bottom))" }}
+          >
+            {miscLinks.map((link) => (
               <NavItem
                 key={link.to}
                 to={link.to}
                 icon={link.icon}
                 label={link.label}
                 active={isActive(link.to)}
-                badge={link.to === "/favorites" ? totalCount : undefined}
+                accent="tertiary"
               />
             ))}
-            {/* More button → switches back to primary (Home) */}
             <button
               onClick={() => navigate("/")}
+              aria-label="Switch to main menu"
               className="flex flex-col items-center justify-center px-2 py-1.5 rounded-xl transition-all duration-200 text-muted-foreground"
             >
               <MoreHorizontal className="w-5 h-5" strokeWidth={2} />
@@ -83,11 +125,47 @@ const BottomNav = () => {
     );
   }
 
-  // Primary nav
+  // Secondary nav — toggle goes to misc (FOSS)
+  if (isOnMorePage) {
+    return (
+      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
+        <div className="mx-2 mb-2 bg-card border-2 border-foreground/80 rounded-2xl shadow-pop">
+          <div
+            className="flex items-center justify-around px-1 py-1.5"
+            style={{ paddingBottom: "max(0.375rem, env(safe-area-inset-bottom))" }}
+          >
+            {moreLinks.map((link) => (
+              <NavItem
+                key={link.to}
+                to={link.to}
+                icon={link.icon}
+                label={link.label}
+                active={isActive(link.to)}
+                badge={link.to === "/favorites" ? totalCount : undefined}
+                accent="secondary"
+              />
+            ))}
+            <button
+              onClick={() => navigate("/foss-apps")}
+              aria-label="Switch to extras menu"
+              className="flex flex-col items-center justify-center px-2 py-1.5 rounded-xl transition-all duration-200 text-muted-foreground"
+            >
+              <MoreHorizontal className="w-5 h-5" strokeWidth={2} />
+            </button>
+          </div>
+        </div>
+      </nav>
+    );
+  }
+
+  // Primary nav — toggle goes to secondary (Ebooks)
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
       <div className="mx-2 mb-2 bg-card border-2 border-foreground/80 rounded-2xl shadow-pop">
-        <div className="flex items-center justify-around px-1 py-1.5" style={{ paddingBottom: 'max(0.375rem, env(safe-area-inset-bottom))' }}>
+        <div
+          className="flex items-center justify-around px-1 py-1.5"
+          style={{ paddingBottom: "max(0.375rem, env(safe-area-inset-bottom))" }}
+        >
           {primaryLinks.map((link) => (
             <NavItem
               key={link.to}
@@ -95,11 +173,12 @@ const BottomNav = () => {
               icon={link.icon}
               label={link.label}
               active={isActive(link.to)}
+              accent="primary"
             />
           ))}
-          {/* More button → switches to secondary (Ebooks) */}
           <button
             onClick={() => navigate("/ebooks")}
+            aria-label="Switch to more menu"
             className="flex flex-col items-center justify-center px-2 py-1.5 rounded-xl transition-all duration-200 text-muted-foreground"
           >
             <MoreHorizontal className="w-5 h-5" strokeWidth={2} />
