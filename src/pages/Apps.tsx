@@ -115,6 +115,12 @@ const Apps = () => {
             >
               ⚡ Shizuku Apps — Power Without Root →
             </a>
+            <a
+              href="/morphe"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-bold border-2 border-foreground/80 shadow-pop hover:-translate-y-0.5 transition-transform"
+            >
+              ✨ Morphe — Patched Builds →
+            </a>
           </div>
         </section>
         <FeaturedCollections

@@ -50,24 +50,8 @@ const FossAppCard = ({ name, author, url, category }: Props) => {
         )}
       </div>
 
-      {loading ? (
-        <div className="space-y-2 mb-3">
-          <Skeleton className="h-3 w-full" />
-          <Skeleton className="h-3 w-5/6" />
-          <Skeleton className="h-3 w-2/3" />
-        </div>
-      ) : info?.description ? (
-        <p className="text-sm text-muted-foreground mb-3 line-clamp-3">{info.description}</p>
-      ) : (
-        <p className="text-sm text-muted-foreground mb-3 italic">
-          {supported
-            ? "No description available."
-            : "External source — open the repo for details."}
-        </p>
-      )}
-
       {info?.topics && info.topics.length > 0 && (
-        <div className="flex flex-wrap gap-1 mb-3">
+        <div className="flex flex-wrap gap-1 mb-3 mt-1">
           {info.topics.slice(0, 4).map((t) => (
             <span
               key={t}
