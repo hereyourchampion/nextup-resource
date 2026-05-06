@@ -21,6 +21,7 @@ const CollectionPage = lazy(() => import("./pages/CollectionPage"));
 const SpecialCourses = lazy(() => import("./pages/SpecialCourses"));
 const FossApps = lazy(() => import("./pages/FossApps"));
 const ShizukuApps = lazy(() => import("./pages/ShizukuApps"));
+const Morphe = lazy(() => import("./pages/Morphe"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -74,6 +75,7 @@ const App = () => {
                 <Route path="/special-courses" element={<SpecialCourses />} />
                 <Route path="/foss-apps" element={<FossApps />} />
                 <Route path="/shizuku-apps" element={<ShizukuApps />} />
+                <Route path="/morphe" element={<Morphe />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>

@@ -25,6 +25,12 @@ Nextup Resources is a curated learning platform that aggregates high-quality edu
 - **Ebooks Library** — Curated ebooks for self-improvement and professional growth
 - **Apps & Websites** — Handpicked productivity tools and entertainment apps
 - **AI Tools Directory** — Discover and explore 50+ AI-powered tools
+- **FOSS Apps** — 700+ free & open-source Android apps from the community catalog
+- **Shizuku Apps** — Power apps that work without root via Shizuku
+- **Morphe Builds** — Live-fetched patched Android builds from `nullcpy/rvb` GitHub releases
+- **Placement Material** — Curated company-prep bundles
+- **Welcome Intro** — One-time onboarding modal for first-time visitors
+- **Triple Bottom Nav** — Cycles between Primary → More → Misc menus on mobile
 - **Favorites System** — Bookmark content across all categories with persistent storage
 - **Study Mode** — Focus-oriented UI with a calming green palette
 - **Dark Mode** — Full light/dark theme support with refined contrast

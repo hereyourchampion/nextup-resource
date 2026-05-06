@@ -14,6 +14,7 @@ import {
   Github,
   Zap,
   Briefcase,
+  Sparkles,
 } from "lucide-react";
 import { useFavorites } from "@/hooks/useFavorites";
 
@@ -36,6 +37,7 @@ const moreLinks = [
 const miscLinks = [
   { to: "/foss-apps", icon: Github, label: "FOSS" },
   { to: "/shizuku-apps", icon: Zap, label: "Shizuku" },
+  { to: "/morphe", icon: Sparkles, label: "Morphe" },
   { to: "/special-courses", icon: Briefcase, label: "Placement" },
 ];
 
