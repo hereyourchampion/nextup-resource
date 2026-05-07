@@ -12,9 +12,11 @@ import {
   Heart,
   X,
   PartyPopper,
+  Layers,
 } from "lucide-react";
 
-const STORAGE_KEY = "intro-seen-v1";
+const STORAGE_KEY = "intro-seen-v2";
+export const OPEN_INTRO_EVENT = "nextup:open-intro";
 
 const features = [
   { icon: BookOpen, title: "Premium Courses", desc: "50+ curated learning bundles." },
@@ -24,17 +26,27 @@ const features = [
   { icon: Github, title: "FOSS Apps", desc: "Open-source Android favorites." },
   { icon: Zap, title: "Shizuku Apps", desc: "Power tools — no root needed." },
   { icon: Sparkles, title: "Morphe Builds", desc: "Patched apps, fresh from GitHub." },
+  { icon: Layers, title: "Material You", desc: "Apps designed for Material You." },
   { icon: Briefcase, title: "Placement Material", desc: "Top company prep bundles." },
   { icon: Heart, title: "Favorites", desc: "Bookmark anything across the site." },
 ];
 
+export const openIntroModal = () => {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    /* ignore */
+  }
+  window.dispatchEvent(new CustomEvent(OPEN_INTRO_EVENT));
+};
+
 const IntroModal = () => {
   const [open, setOpen] = useState(false);
+  const [dontShow, setDontShow] = useState(true);
 
   useEffect(() => {
     try {
       if (!localStorage.getItem(STORAGE_KEY)) {
-        // tiny delay so the modal feels intentional
         const id = setTimeout(() => setOpen(true), 400);
         return () => clearTimeout(id);
       }
@@ -43,9 +55,19 @@ const IntroModal = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const handler = () => setOpen(true);
+    window.addEventListener(OPEN_INTRO_EVENT, handler);
+    return () => window.removeEventListener(OPEN_INTRO_EVENT, handler);
+  }, []);
+
   const close = () => {
     try {
-      localStorage.setItem(STORAGE_KEY, "1");
+      if (dontShow) {
+        localStorage.setItem(STORAGE_KEY, "1");
+      } else {
+        localStorage.removeItem(STORAGE_KEY);
+      }
     } catch {
       /* ignore */
     }
@@ -101,14 +123,25 @@ const IntroModal = () => {
             ))}
           </div>
 
-          <div className="rounded-2xl border-2 border-foreground/30 p-4 mb-6 bg-background/50">
+          <div className="rounded-2xl border-2 border-foreground/30 p-4 mb-5 bg-background/50">
             <p className="text-xs font-bold text-muted-foreground mb-1.5">💡 Quick tips</p>
             <ul className="text-sm text-foreground space-y-1 list-disc list-inside">
               <li>Tap the <strong>•••</strong> in the bottom bar to cycle Primary → More → Misc menus.</li>
+              <li>Use the <strong>global search</strong> on the home page to find anything fast.</li>
               <li>Switch <strong>Study Mode</strong> from the header for a calm, focus-only view.</li>
-              <li>Everything is private — favorites &amp; settings live only on your device.</li>
+              <li>Reopen this guide anytime from the footer's <strong>“Show intro”</strong> link.</li>
             </ul>
           </div>
+
+          <label className="flex items-center justify-center gap-2 text-sm font-medium text-foreground mb-4 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={dontShow}
+              onChange={(e) => setDontShow(e.target.checked)}
+              className="w-4 h-4 accent-primary rounded border-2 border-foreground/80"
+            />
+            Don't show this again
+          </label>
 
           <div className="flex flex-col sm:flex-row gap-2 justify-center">
             <Link
@@ -117,6 +150,13 @@ const IntroModal = () => {
               className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-primary text-primary-foreground font-bold border-2 border-foreground/80 shadow-pop hover:-translate-y-0.5 transition-transform"
             >
               Explore courses →
+            </Link>
+            <Link
+              to="/faq"
+              onClick={close}
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-secondary text-secondary-foreground font-bold border-2 border-foreground/80 shadow-pop hover:-translate-y-0.5 transition-transform"
+            >
+              Need help? FAQ
             </Link>
             <button
               onClick={close}
