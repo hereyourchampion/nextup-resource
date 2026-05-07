@@ -121,6 +121,12 @@ const Apps = () => {
             >
               ✨ Morphe — Patched Builds →
             </a>
+            <a
+              href="/material-you"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-tertiary text-tertiary-foreground font-bold border-2 border-foreground/80 shadow-pop hover:-translate-y-0.5 transition-transform"
+            >
+              🎨 Material You — Designed Apps →
+            </a>
           </div>
         </section>
         <FeaturedCollections
