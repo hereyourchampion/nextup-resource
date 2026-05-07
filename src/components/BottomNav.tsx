@@ -30,8 +30,8 @@ const primaryLinks = [
 const moreLinks = [
   { to: "/ebooks", icon: BookText, label: "Ebooks" },
   { to: "/favorites", icon: Heart, label: "Favorites" },
+  { to: "/special-courses", icon: Briefcase, label: "Placement" },
   { to: "/contact", icon: Mail, label: "Contact" },
-  { to: "/faq", icon: HelpCircle, label: "FAQs" },
   { to: "/install", icon: Download, label: "Install" },
 ];
 
@@ -39,7 +39,7 @@ const miscLinks = [
   { to: "/foss-apps", icon: Github, label: "FOSS" },
   { to: "/shizuku-apps", icon: Zap, label: "Shizuku" },
   { to: "/morphe", icon: Sparkles, label: "Morphe" },
-  { to: "/special-courses", icon: Briefcase, label: "Placement" },
+  { to: "/material-you", icon: Layers, label: "Material You" },
 ];
 
 const morePaths = moreLinks.map((l) => l.to);
