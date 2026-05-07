@@ -150,6 +150,7 @@ export function useMorpheReleases(): State {
       })
       .catch((e) => {
         if (cancelled) return;
+        if (stale) return; // keep showing stale data; do not surface error
         setState({
           loading: false,
           error: e?.message || "Failed to load releases",
