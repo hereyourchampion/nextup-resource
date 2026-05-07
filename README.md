@@ -27,9 +27,11 @@ Nextup Resources is a curated learning platform that aggregates high-quality edu
 - **AI Tools Directory** — Discover and explore 50+ AI-powered tools
 - **FOSS Apps** — 700+ free & open-source Android apps from the community catalog
 - **Shizuku Apps** — Power apps that work without root via Shizuku
-- **Morphe Builds** — Live-fetched patched Android builds from `nullcpy/rvb` GitHub releases
+- **Morphe Builds** — Live-fetched patched Android builds from `nullcpy/rvb` GitHub releases (12h SWR cache)
+- **Material You Apps** — 1100+ apps designed for Material You, sourced from `nyas1/Material-You-app-list`
 - **Placement Material** — Curated company-prep bundles
-- **Welcome Intro** — One-time onboarding modal for first-time visitors
+- **Global Search** — Search every category from the home page in one place
+- **Welcome Intro** — One-time onboarding modal with “Don't show again”, reopenable from the footer
 - **Triple Bottom Nav** — Cycles between Primary → More → Misc menus on mobile
 - **Favorites System** — Bookmark content across all categories with persistent storage
 - **Study Mode** — Focus-oriented UI with a calming green palette
