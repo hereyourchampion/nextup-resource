@@ -23,6 +23,7 @@ const SpecialCourses = lazy(() => import("./pages/SpecialCourses"));
 const FossApps = lazy(() => import("./pages/FossApps"));
 const ShizukuApps = lazy(() => import("./pages/ShizukuApps"));
 const Morphe = lazy(() => import("./pages/Morphe"));
+const MaterialYou = lazy(() => import("./pages/MaterialYou"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
