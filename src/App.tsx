@@ -78,9 +78,11 @@ const App = () => {
                 <Route path="/foss-apps" element={<FossApps />} />
                 <Route path="/shizuku-apps" element={<ShizukuApps />} />
                 <Route path="/morphe" element={<Morphe />} />
+                <Route path="/material-you" element={<MaterialYou />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
+            <IntroModal />
           </BrowserRouter>
         </TooltipProvider>
       </QueryClientProvider>
