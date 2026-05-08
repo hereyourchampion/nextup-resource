@@ -167,61 +167,59 @@ const GlobalSearch = () => {
                   })}
                 </div>
               </div>
-            <div className="mt-3 bg-card border-2 border-foreground/80 rounded-2xl shadow-pop p-4 max-h-[60vh] overflow-y-auto">
-            </>
-          )}
-            <div className="mt-5 bg-card border-2 border-foreground/80 rounded-2xl shadow-pop p-4 max-h-[60vh] overflow-y-auto">
-              {grouped.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-6">
-                  No results for <strong>{debounced}</strong>. Try a different keyword.
-                </p>
-              ) : (
-                <div className="space-y-5">
-                  {grouped.map(([group, items]) => (
-                    <div key={group}>
-                      <div className="flex items-center justify-between mb-2">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-bold border-2 border-foreground/80 ${groupAccent[group] ?? "bg-card text-foreground"}`}
-                        >
-                          {group}
-                        </span>
-                        <Link
-                          to={items[0].groupTo}
-                          className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-primary"
-                        >
-                          See all <ArrowRight className="w-3 h-3" strokeWidth={2.5} />
-                        </Link>
-                      </div>
-                      <ul className="space-y-1.5">
-                        {items.map((h, i) => {
-                          const Tag: any = h.url ? "a" : Link;
-                          const props = h.url
-                            ? { href: h.url, target: "_blank", rel: "noopener noreferrer" }
-                            : { to: h.to ?? h.groupTo };
-                          return (
-                            <li key={`${group}-${i}`}>
-                              <Tag
-                                {...props}
-                                className="flex items-start gap-3 px-3 py-2 rounded-xl border-2 border-foreground/20 hover:border-foreground/80 hover:bg-background transition-colors"
-                              >
-                                <span className="font-bold text-sm text-foreground line-clamp-1">
-                                  {h.title}
-                                </span>
-                                {h.subtitle && (
-                                  <span className="ml-auto text-xs text-muted-foreground line-clamp-1 shrink-0 max-w-[55%] text-right">
-                                    {h.subtitle}
+              <div className="mt-3 bg-card border-2 border-foreground/80 rounded-2xl shadow-pop p-4 max-h-[60vh] overflow-y-auto">
+                {grouped.length === 0 ? (
+                  <p className="text-sm text-muted-foreground text-center py-6">
+                    No results for <strong>{debounced}</strong>. Try a different keyword.
+                  </p>
+                ) : (
+                  <div className="space-y-5">
+                    {grouped.map(([group, items]) => (
+                      <div key={group}>
+                        <div className="flex items-center justify-between mb-2">
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-bold border-2 border-foreground/80 ${groupAccent[group] ?? "bg-card text-foreground"}`}
+                          >
+                            {group}
+                          </span>
+                          <Link
+                            to={items[0].groupTo}
+                            className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-primary"
+                          >
+                            See all <ArrowRight className="w-3 h-3" strokeWidth={2.5} />
+                          </Link>
+                        </div>
+                        <ul className="space-y-1.5">
+                          {items.map((h, i) => {
+                            const Tag: any = h.url ? "a" : Link;
+                            const props = h.url
+                              ? { href: h.url, target: "_blank", rel: "noopener noreferrer" }
+                              : { to: h.to ?? h.groupTo };
+                            return (
+                              <li key={`${group}-${i}`}>
+                                <Tag
+                                  {...props}
+                                  className="flex items-start gap-3 px-3 py-2 rounded-xl border-2 border-foreground/20 hover:border-foreground/80 hover:bg-background transition-colors"
+                                >
+                                  <span className="font-bold text-sm text-foreground line-clamp-1">
+                                    {h.title}
                                   </span>
-                                )}
-                              </Tag>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+                                  {h.subtitle && (
+                                    <span className="ml-auto text-xs text-muted-foreground line-clamp-1 shrink-0 max-w-[55%] text-right">
+                                      {h.subtitle}
+                                    </span>
+                                  )}
+                                </Tag>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
           )}
         </div>
       </div>
