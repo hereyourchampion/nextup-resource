@@ -39,6 +39,8 @@ const miscLinks = [
   { to: "/shizuku-apps", icon: Zap, label: "Shizuku" },
   { to: "/morphe", icon: Sparkles, label: "Morphe" },
   { to: "/material-you", icon: Layers, label: "Material You" },
+  { to: "/special-courses", icon: Briefcase, label: "Placement" },
+  { to: "/ai", icon: Bot, label: "AI" },
 ];
 
 const morePaths = moreLinks.map((l) => l.to);
