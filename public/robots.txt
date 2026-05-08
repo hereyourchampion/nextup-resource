@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://nextupresources.com/sitemap.xml
+Sitemap: https://nextup-resource.vercel.app/sitemap.xml

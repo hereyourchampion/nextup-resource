@@ -39,7 +39,7 @@ export const generateOGMetaTags = (config: {
   image?: string;
   url: string;
 }): Record<string, string> => {
-  const baseUrl = "https://nextupresources.com";
+  const baseUrl = "https://nextup-resource.vercel.app";
   const defaultImage = `${baseUrl}/og-image.png`;
 
   return {
@@ -101,7 +101,7 @@ export const updatePageMeta = (config: {
     canonical.rel = "canonical";
     document.head.appendChild(canonical);
   }
-  canonical.href = `https://nextupresources.com${config.url}`;
+  canonical.href = `https://nextup-resource.vercel.app${config.url}`;
 };
 
 /**
