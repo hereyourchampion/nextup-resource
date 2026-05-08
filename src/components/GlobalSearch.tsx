@@ -58,17 +58,32 @@ const getIndex = () => (cachedIndex ??= buildIndex());
 
 const MAX_PER_GROUP = 4;
 const MAX_TOTAL = 24;
+const MAX_SINGLE_GROUP = 20;
+const FILTERS = ["All", "Courses", "Resources", "Ebooks", "Apps", "Websites", "AI Tools", "FOSS", "Shizuku", "Material You"] as const;
+type FilterKey = typeof FILTERS[number];
 
 const GlobalSearch = () => {
   const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<FilterKey>("All");
   const debounced = useDebounced(query, 150);
 
   const results = useMemo(() => {
     const q = debounced.trim().toLowerCase();
     if (q.length < 2) return [] as Hit[];
     const idx = getIndex();
-    const perGroup: Record<string, number> = {};
     const out: Hit[] = [];
+
+    if (filter !== "All") {
+      for (const h of idx) {
+        if (out.length >= MAX_SINGLE_GROUP) break;
+        if (h.group !== filter) continue;
+        const hay = `${h.title} ${h.subtitle ?? ""}`.toLowerCase();
+        if (hay.includes(q)) out.push(h);
+      }
+      return out;
+    }
+
+    const perGroup: Record<string, number> = {};
     for (const h of idx) {
       if (out.length >= MAX_TOTAL) break;
       const hay = `${h.title} ${h.subtitle ?? ""}`.toLowerCase();
@@ -79,7 +94,7 @@ const GlobalSearch = () => {
       out.push(h);
     }
     return out;
-  }, [debounced]);
+  }, [debounced, filter]);
 
   const grouped = useMemo(() => {
     const m = new Map<string, Hit[]>();
