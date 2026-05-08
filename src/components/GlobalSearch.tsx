@@ -58,17 +58,32 @@ const getIndex = () => (cachedIndex ??= buildIndex());
 
 const MAX_PER_GROUP = 4;
 const MAX_TOTAL = 24;
+const MAX_SINGLE_GROUP = 20;
+const FILTERS = ["All", "Courses", "Resources", "Ebooks", "Apps", "Websites", "AI Tools", "FOSS", "Shizuku", "Material You"] as const;
+type FilterKey = typeof FILTERS[number];
 
 const GlobalSearch = () => {
   const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<FilterKey>("All");
   const debounced = useDebounced(query, 150);
 
   const results = useMemo(() => {
     const q = debounced.trim().toLowerCase();
     if (q.length < 2) return [] as Hit[];
     const idx = getIndex();
-    const perGroup: Record<string, number> = {};
     const out: Hit[] = [];
+
+    if (filter !== "All") {
+      for (const h of idx) {
+        if (out.length >= MAX_SINGLE_GROUP) break;
+        if (h.group !== filter) continue;
+        const hay = `${h.title} ${h.subtitle ?? ""}`.toLowerCase();
+        if (hay.includes(q)) out.push(h);
+      }
+      return out;
+    }
+
+    const perGroup: Record<string, number> = {};
     for (const h of idx) {
       if (out.length >= MAX_TOTAL) break;
       const hay = `${h.title} ${h.subtitle ?? ""}`.toLowerCase();
@@ -79,7 +94,7 @@ const GlobalSearch = () => {
       out.push(h);
     }
     return out;
-  }, [debounced]);
+  }, [debounced, filter]);
 
   const grouped = useMemo(() => {
     const m = new Map<string, Hit[]>();
@@ -132,58 +147,79 @@ const GlobalSearch = () => {
           </div>
 
           {debounced.trim().length >= 2 && (
-            <div className="mt-5 bg-card border-2 border-foreground/80 rounded-2xl shadow-pop p-4 max-h-[60vh] overflow-y-auto">
-              {grouped.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-6">
-                  No results for <strong>{debounced}</strong>. Try a different keyword.
-                </p>
-              ) : (
-                <div className="space-y-5">
-                  {grouped.map(([group, items]) => (
-                    <div key={group}>
-                      <div className="flex items-center justify-between mb-2">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-bold border-2 border-foreground/80 ${groupAccent[group] ?? "bg-card text-foreground"}`}
-                        >
-                          {group}
-                        </span>
-                        <Link
-                          to={items[0].groupTo}
-                          className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-primary"
-                        >
-                          See all <ArrowRight className="w-3 h-3" strokeWidth={2.5} />
-                        </Link>
-                      </div>
-                      <ul className="space-y-1.5">
-                        {items.map((h, i) => {
-                          const Tag: any = h.url ? "a" : Link;
-                          const props = h.url
-                            ? { href: h.url, target: "_blank", rel: "noopener noreferrer" }
-                            : { to: h.to ?? h.groupTo };
-                          return (
-                            <li key={`${group}-${i}`}>
-                              <Tag
-                                {...props}
-                                className="flex items-start gap-3 px-3 py-2 rounded-xl border-2 border-foreground/20 hover:border-foreground/80 hover:bg-background transition-colors"
-                              >
-                                <span className="font-bold text-sm text-foreground line-clamp-1">
-                                  {h.title}
-                                </span>
-                                {h.subtitle && (
-                                  <span className="ml-auto text-xs text-muted-foreground line-clamp-1 shrink-0 max-w-[55%] text-right">
-                                    {h.subtitle}
-                                  </span>
-                                )}
-                              </Tag>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  ))}
+            <>
+              <div className="mt-4 -mx-1 overflow-x-auto no-scrollbar">
+                <div className="flex items-center gap-2 px-1 pb-1 whitespace-nowrap">
+                  {FILTERS.map((f) => {
+                    const active = filter === f;
+                    const accent = f === "All" ? "bg-foreground text-background" : (groupAccent[f] ?? "bg-card text-foreground");
+                    return (
+                      <button
+                        key={f}
+                        onClick={() => setFilter(f)}
+                        className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-bold border-2 border-foreground/80 transition-all ${
+                          active ? `${accent} shadow-pop` : "bg-card text-foreground hover:-translate-y-0.5"
+                        }`}
+                      >
+                        {f}
+                      </button>
+                    );
+                  })}
                 </div>
-              )}
-            </div>
+              </div>
+              <div className="mt-3 bg-card border-2 border-foreground/80 rounded-2xl shadow-pop p-4 max-h-[60vh] overflow-y-auto">
+                {grouped.length === 0 ? (
+                  <p className="text-sm text-muted-foreground text-center py-6">
+                    No results for <strong>{debounced}</strong>. Try a different keyword.
+                  </p>
+                ) : (
+                  <div className="space-y-5">
+                    {grouped.map(([group, items]) => (
+                      <div key={group}>
+                        <div className="flex items-center justify-between mb-2">
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-bold border-2 border-foreground/80 ${groupAccent[group] ?? "bg-card text-foreground"}`}
+                          >
+                            {group}
+                          </span>
+                          <Link
+                            to={items[0].groupTo}
+                            className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-primary"
+                          >
+                            See all <ArrowRight className="w-3 h-3" strokeWidth={2.5} />
+                          </Link>
+                        </div>
+                        <ul className="space-y-1.5">
+                          {items.map((h, i) => {
+                            const Tag: any = h.url ? "a" : Link;
+                            const props = h.url
+                              ? { href: h.url, target: "_blank", rel: "noopener noreferrer" }
+                              : { to: h.to ?? h.groupTo };
+                            return (
+                              <li key={`${group}-${i}`}>
+                                <Tag
+                                  {...props}
+                                  className="flex items-start gap-3 px-3 py-2 rounded-xl border-2 border-foreground/20 hover:border-foreground/80 hover:bg-background transition-colors"
+                                >
+                                  <span className="font-bold text-sm text-foreground line-clamp-1">
+                                    {h.title}
+                                  </span>
+                                  {h.subtitle && (
+                                    <span className="ml-auto text-xs text-muted-foreground line-clamp-1 shrink-0 max-w-[55%] text-right">
+                                      {h.subtitle}
+                                    </span>
+                                  )}
+                                </Tag>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
           )}
         </div>
       </div>

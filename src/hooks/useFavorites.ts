@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { toast } from "@/hooks/use-toast";
 
-type FavoriteType = "course" | "resource" | "ebook";
+type FavoriteType = "course" | "resource" | "ebook" | "ai-tool" | "foss" | "shizuku" | "morphe" | "material-you";
 
 interface FavoriteItem {
   id: string;
@@ -56,7 +56,12 @@ export const useFavorites = () => {
       // Use ref to always get the latest favorites
       const currentFavorites = favoritesRef.current;
       const exists = currentFavorites.some((fav) => fav.id === id && fav.type === type);
-      const typeLabel = type === "course" ? "Course" : type === "resource" ? "Resource" : "Ebook";
+      const labels: Record<FavoriteType, string> = {
+        "course": "Course", "resource": "Resource", "ebook": "Ebook",
+        "ai-tool": "AI tool", "foss": "FOSS app", "shizuku": "Shizuku app",
+        "morphe": "Morphe build", "material-you": "Material You app",
+      };
+      const typeLabel = labels[type] ?? "Item";
       
       if (exists) {
         const newFavorites = currentFavorites.filter((fav) => !(fav.id === id && fav.type === type));

@@ -1,12 +1,18 @@
 import { useState, useMemo } from "react";
 import { createPortal } from "react-dom";
-import { Bell, X, BookOpen, Package, Smartphone, Clock } from "lucide-react";
+import { Bell, X, BookOpen, Package, Smartphone, Clock, Bot, Github, Zap, Sparkles, Layers } from "lucide-react";
 import { courses, resources, ebooks, apps } from "@/data/content";
+import { aiTools } from "@/data/aiTools";
+import { fossListApps } from "@/data/fossList";
+import { shizukuApps } from "@/data/shizukuApps";
+import { materialYouApps } from "@/data/materialYouApps";
+
+type ItemType = "course" | "resource" | "ebook" | "app" | "ai-tool" | "foss" | "shizuku" | "morphe" | "material-you";
 
 interface NotificationItem {
   title: string;
   category: string;
-  type: "course" | "resource" | "ebook" | "app";
+  type: ItemType;
   dateAdded: string;
   link: string;
 }
@@ -15,36 +21,46 @@ const NotificationCenter = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const recentItems = useMemo(() => {
-    const now = new Date();
-    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
     const items: NotificationItem[] = [];
+    const within = (d?: string) => d && new Date(d) >= cutoff;
 
-    courses.filter(c => c.dateAdded && new Date(c.dateAdded) >= sevenDaysAgo)
-      .forEach(c => items.push({ title: c.title, category: c.category, type: "course", dateAdded: c.dateAdded!, link: c.link }));
-    resources.filter(r => r.dateAdded && new Date(r.dateAdded) >= sevenDaysAgo)
-      .forEach(r => items.push({ title: r.title, category: r.category, type: "resource", dateAdded: r.dateAdded!, link: r.link }));
-    ebooks.filter(e => e.dateAdded && new Date(e.dateAdded) >= sevenDaysAgo)
-      .forEach(e => items.push({ title: e.title, category: e.category, type: "ebook", dateAdded: e.dateAdded!, link: e.link }));
-    apps.filter(a => a.dateAdded && new Date(a.dateAdded) >= sevenDaysAgo)
-      .forEach(a => items.push({ title: a.title, category: a.category, type: "app", dateAdded: a.dateAdded!, link: a.link }));
+    courses.forEach(c => within(c.dateAdded) && items.push({ title: c.title, category: c.category, type: "course", dateAdded: c.dateAdded!, link: c.link }));
+    resources.forEach(r => within(r.dateAdded) && items.push({ title: r.title, category: r.category, type: "resource", dateAdded: r.dateAdded!, link: r.link }));
+    ebooks.forEach(e => within(e.dateAdded) && items.push({ title: e.title, category: e.category, type: "ebook", dateAdded: e.dateAdded!, link: e.link }));
+    apps.forEach(a => within(a.dateAdded) && items.push({ title: a.title, category: a.category, type: "app", dateAdded: a.dateAdded!, link: a.link }));
+    aiTools.forEach((t: any) => within(t.dateAdded) && items.push({ title: t.name, category: t.category, type: "ai-tool", dateAdded: t.dateAdded, link: t.url }));
+    fossListApps.forEach((f: any) => within(f.dateAdded) && items.push({ title: f.name, category: f.category, type: "foss", dateAdded: f.dateAdded, link: f.url }));
+    shizukuApps.forEach((s: any) => within(s.dateAdded) && items.push({ title: s.name, category: s.category, type: "shizuku", dateAdded: s.dateAdded, link: s.url }));
+    materialYouApps.forEach((m: any) => within(m.dateAdded) && items.push({ title: m.name, category: m.category, type: "material-you", dateAdded: m.dateAdded, link: m.url }));
 
     return items.sort((a, b) => b.dateAdded.localeCompare(a.dateAdded));
   }, []);
 
-  const typeIcon = (type: string) => {
+  const typeIcon = (type: ItemType) => {
     switch (type) {
       case "course": return <BookOpen className="w-4 h-4" strokeWidth={2.5} />;
       case "resource": return <Package className="w-4 h-4" strokeWidth={2.5} />;
       case "app": return <Smartphone className="w-4 h-4" strokeWidth={2.5} />;
+      case "ai-tool": return <Bot className="w-4 h-4" strokeWidth={2.5} />;
+      case "foss": return <Github className="w-4 h-4" strokeWidth={2.5} />;
+      case "shizuku": return <Zap className="w-4 h-4" strokeWidth={2.5} />;
+      case "morphe": return <Sparkles className="w-4 h-4" strokeWidth={2.5} />;
+      case "material-you": return <Layers className="w-4 h-4" strokeWidth={2.5} />;
       default: return <BookOpen className="w-4 h-4" strokeWidth={2.5} />;
     }
   };
 
-  const typeColor = (type: string) => {
+  const typeColor = (type: ItemType) => {
     switch (type) {
       case "course": return "bg-primary text-primary-foreground";
       case "resource": return "bg-quaternary text-quaternary-foreground";
       case "app": return "bg-tertiary text-tertiary-foreground";
+      case "ai-tool": return "bg-primary text-primary-foreground";
+      case "foss": return "bg-tertiary text-tertiary-foreground";
+      case "shizuku": return "bg-secondary text-secondary-foreground";
+      case "morphe": return "bg-secondary text-secondary-foreground";
+      case "material-you": return "bg-tertiary text-tertiary-foreground";
       default: return "bg-secondary text-secondary-foreground";
     }
   };
@@ -103,7 +119,7 @@ const NotificationCenter = () => {
                   <div className="space-y-3">
                     {recentItems.map((item, i) => (
                       <a
-                        key={`${item.type}-${item.title}`}
+                        key={`${item.type}-${item.title}-${i}`}
                         href={item.link}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -117,7 +133,7 @@ const NotificationCenter = () => {
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-bold text-foreground line-clamp-2">{item.title}</p>
                             <div className="flex items-center gap-2 mt-1.5">
-                              <span className="text-xs text-muted-foreground capitalize font-medium">{item.type}</span>
+                              <span className="text-xs text-muted-foreground capitalize font-medium">{item.type.replace("-", " ")}</span>
                               <span className="text-xs text-muted-foreground/40">•</span>
                               <span className="text-xs text-muted-foreground flex items-center gap-1 font-medium">
                                 <Clock className="w-3 h-3" /> {daysAgo(item.dateAdded)}
@@ -132,7 +148,7 @@ const NotificationCenter = () => {
                   <div className="flex flex-col items-center justify-center h-full text-center px-4">
                     <Bell className="w-12 h-12 text-muted-foreground/30 mb-4" />
                     <p className="text-muted-foreground font-bold">All caught up!</p>
-                    <p className="text-sm text-muted-foreground/60 mt-1">New content will appear here weekly</p>
+                    <p className="text-sm text-muted-foreground/60 mt-1">New content from the last 30 days will show up here</p>
                   </div>
                 )}
               </div>

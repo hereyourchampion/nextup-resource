@@ -1,7 +1,9 @@
 import { ExternalLink, Github, Star, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import CopyLinkButton from "@/components/CopyLinkButton";
+import FavoriteButton from "@/components/FavoriteButton";
 import { useGithubRepoInfo } from "@/hooks/useGithubRepoInfo";
+import { useFavorites, generateId } from "@/hooks/useFavorites";
 import { toast } from "sonner";
 
 interface Props {
@@ -14,6 +16,9 @@ interface Props {
 const FossAppCard = ({ name, author, url, category }: Props) => {
   const supported = /github\.com|gitlab\.com|codeberg\.org/i.test(url);
   const { info } = useGithubRepoInfo(url, supported);
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const id = generateId(`${author}-${name}`);
+  const fav = isFavorite(id, "foss");
 
   const handleOpen = () => {
     toast.success("Opening repo…");
@@ -73,6 +78,7 @@ const FossAppCard = ({ name, author, url, category }: Props) => {
           <span>Open repo</span>
         </a>
         <CopyLinkButton url={url} />
+        <FavoriteButton isFavorite={fav} onToggle={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(id, "foss"); }} />
       </div>
     </div>
   );

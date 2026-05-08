@@ -9,11 +9,14 @@ import { aiTools, AITool } from "@/data/aiTools";
 import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Search, ExternalLink, Bot, Sparkles, Filter } from "lucide-react";
+import FavoriteButton from "@/components/FavoriteButton";
+import { useFavorites, generateId } from "@/hooks/useFavorites";
 
 const AI = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedTool, setSelectedTool] = useState<AITool | null>(null);
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const categories = useMemo(() => {
     const cats = new Set(aiTools.map(t => t.category));
@@ -102,21 +105,26 @@ const AI = () => {
                     <span className="text-sm text-muted-foreground font-medium">({tools.length})</span>
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pop-stagger">
-                    {tools.map((tool) => (
-                      <button
-                        key={tool.name}
-                        onClick={() => setSelectedTool(tool)}
-                        className="pop-card p-6 group flex flex-col text-left w-full"
-                      >
-                        <div className="flex items-start justify-between mb-3">
-                          <h4 className="text-lg font-bold text-foreground font-heading group-hover:text-primary transition-colors">
-                            {tool.name}
-                          </h4>
-                          <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0 mt-1" strokeWidth={2.5} />
+                    {tools.map((tool) => {
+                      const tid = generateId(tool.name);
+                      const fav = isFavorite(tid, "ai-tool");
+                      return (
+                      <div key={tool.name} className="pop-card p-6 group flex flex-col text-left w-full relative">
+                        <div className="absolute top-3 right-3 z-10">
+                          <FavoriteButton isFavorite={fav} onToggle={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(tid, "ai-tool"); }} />
                         </div>
-                        <p className="text-muted-foreground text-sm">{tool.description}</p>
-                      </button>
-                    ))}
+                        <button onClick={() => setSelectedTool(tool)} className="text-left flex-1 flex flex-col">
+                          <div className="flex items-start justify-between mb-3 pr-10">
+                            <h4 className="text-lg font-bold text-foreground font-heading group-hover:text-primary transition-colors">
+                              {tool.name}
+                            </h4>
+                            <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0 mt-1" strokeWidth={2.5} />
+                          </div>
+                          <p className="text-muted-foreground text-sm">{tool.description}</p>
+                        </button>
+                      </div>
+                      );
+                    })}
                   </div>
                 </div>
               ))

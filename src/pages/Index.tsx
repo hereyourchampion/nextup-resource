@@ -19,11 +19,11 @@ const Index = () => {
       "@context": "https://schema.org",
       "@type": "WebSite",
       name: "Nextup Resources",
-      url: "https://nextupresources.com/",
+      url: "https://nextup-resource.vercel.app/",
       description: "Premium courses and free learning resources for learners worldwide",
       potentialAction: {
         "@type": "SearchAction",
-        target: "https://nextupresources.com/courses?q={search_term_string}",
+        target: "https://nextup-resource.vercel.app/courses?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     });
