@@ -1,5 +1,5 @@
 // api/chat.ts
-// Vercel serverless function: Resourcly assistant via Google Gemini.
+// Vercel serverless function: Resourcly assistant via Gemini (OpenAI-compatible).
 // Requires GEMINI_API_KEY env var in Lovable project settings.
 
 const SYSTEM_PROMPT = `You are Resourcly, the helpful assistant for Nextup Resources (https://nextup-resource.vercel.app) — a curated learning platform by Nextup Studio. You help users find content across:
@@ -46,28 +46,22 @@ export default async function handler(req: any, res: any) {
       return;
     }
 
-    // Convert OpenAI message format to Gemini format
-    const contents = messages.map((m: any) => ({
-      role: m.role === "assistant" ? "model" : "user",
-      parts: [{ text: m.content }],
-    }));
-
     const upstream = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
       {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          system_instruction: {
-            parts: [{ text: SYSTEM_PROMPT }],
-          },
-          contents,
-          generationConfig: {
-            maxOutputTokens: 500,
-            temperature: 0.7,
-          },
+          model: "gemini-2.0-flash",
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            ...messages,
+          ],
+          max_tokens: 500,
+          temperature: 0.7,
         }),
       }
     );
@@ -87,7 +81,7 @@ export default async function handler(req: any, res: any) {
     }
 
     const data = await upstream.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+    const reply = data.choices?.[0]?.message?.content ?? "";
     res.status(200).json({ reply });
   } catch (e: any) {
     res.status(500).json({ error: e?.message || "Unknown error" });
