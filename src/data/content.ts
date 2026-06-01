@@ -2023,6 +2023,7 @@ export const collections: Collection[] = [
       { title: "GTA Liberty City Stories", description: "Classic prequel with open-world gameplay.", link: "https://dl.apkvision.org/gta-liberty-city-stories/GTA-LCS-v2.4.362-mod-apkvision.apk", badge: "APK" },
       { title: "GTA Chinatown Wars", description: "Top-down GTA with engaging story.", link: "https://dl.apkvision.org/gta-chinatown-wars/GTA-CTW-v4.4.221-full-apkvision.apk", badge: "APK" },
       { title: "GTA III Definitive Edition (PC)", description: "Fully remastered GTA III for PC.", link: "https://gofile.io/d/PK0OMw?utm_source=tg&utm_campaign=pcgames_freedownload&utm_medium=content&utm_term=12159", badge: "PC" },
+      { title: "GTA 3", description: "The original GTA 3 — classic Liberty City open-world chaos.", link: "https://t.me/nextupfilebot?start=BQADAQADkgcAAvAJ6ET3OazFrGZhKxYE", badge: "Telegram" },
     ],
   },
   {
