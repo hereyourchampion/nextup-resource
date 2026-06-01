@@ -1475,6 +1475,46 @@ const ebooksData: Ebook[] = [
     link: "https://t.me/nextupfilebot?start=BQADAQADkQYAAqvnsEcdWlHgXVSG7BYE",
     dateAdded: "2026-05-02",
   },
+  {
+    title: "Clone Training Script",
+    description: "Complete script and playbook for training a personal AI clone — frameworks, prompts and workflows to replicate your voice and expertise.",
+    category: "AI",
+    image: ebookDefaultImg,
+    link: "https://t.me/nextupfilebot?start=BQADAQADtAcAAvAJ6ETZvw7-lPE7uRYE",
+    dateAdded: "2026-06-01",
+  },
+  {
+    title: "AI Tools to Use Daily",
+    description: "A curated handbook of AI tools to plug into your daily workflow — productivity, writing, design, research and more.",
+    category: "AI",
+    image: ebookDefaultImg,
+    link: "https://t.me/nextupfilebot?start=BQADAQADuwcAAvAJ6ETI_Rq2h9h_SRYE",
+    dateAdded: "2026-06-01",
+  },
+  {
+    title: "Higgsfield Video Prompts",
+    description: "Prompt collection for Higgsfield — cinematic video prompts, motion ideas and templates to produce stunning AI video.",
+    category: "AI",
+    image: ebookDefaultImg,
+    link: "https://t.me/nextupfilebot?start=BQADAQADvAcAAvAJ6ESXhnAmq3mRzxYE",
+    dateAdded: "2026-06-01",
+  },
+  {
+    title: "Video Sample Prompts",
+    description: "Hand-picked sample prompts for AI video generation — angles, motion, styles and scene descriptions ready to copy and use.",
+    category: "AI",
+    image: ebookDefaultImg,
+    link: "https://t.me/nextupfilebot?start=BQADAQADvgcAAvAJ6ERq4ahS54uSGRYE",
+    dateAdded: "2026-06-01",
+  },
+  {
+    title: "Gen AI Course — Be Unstoppable with AI (2025)",
+    description: "Beginner to advanced Generative AI course by Paras Madan (Study IQ Skills). Become unstoppable with practical AI workflows, tools and projects.",
+    category: "AI",
+    image: genAiCourseAsset.url,
+    link: "https://t.me/nextupfilebot?start=BQADAQADoAcAAvAJ8ERgvBx47LIpBhYE",
+    dateAdded: "2026-06-01",
+  },
 ];
 
 // Website resources for the Apps & Websites section
