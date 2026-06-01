@@ -24,6 +24,8 @@ import funnyViralReelsImg from "@/assets/resources/funny-viral-reels.jpg";
 import ebookDefaultImg from "@/assets/ebooks/ebook-default.jpg";
 import videoEditorEbookImg from "@/assets/ebooks/video-editor-ebook.jpg";
 import vipEbookPackImg from "@/assets/ebooks/vip-ebook-pack.jpg";
+import genAiCourseAsset from "@/assets/ebooks/gen-ai-course.jpg.asset.json";
+import monumentFontsAsset from "@/assets/resources/monument-extended-fonts.jpg.asset.json";
 
 // Import app images
 import freePcGamesImg from "@/assets/apps/free-pc-games.jpg";
