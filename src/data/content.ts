@@ -1897,6 +1897,14 @@ const appsData: App[] = [
     link: "https://gofile.io/d/5WzB4a?utm_source=tg&utm_campaign=pcgames_freedownload&utm_medium=content&utm_term=12159",
     dateAdded: "2026-03-01",
   },
+  {
+    title: "SkyStream",
+    description: "Open-source streaming client for Android — browse, search and play movies and shows from multiple sources. Always the latest GitHub release.",
+    category: "Streaming",
+    image: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=800&auto=format&fit=crop",
+    link: "https://github.com/akashdh11/skystream/releases/latest",
+    dateAdded: "2026-06-01",
+  },
 ];
 
 // Sort by preference utility
