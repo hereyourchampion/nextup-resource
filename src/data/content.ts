@@ -1386,6 +1386,14 @@ const resourcesData: Resource[] = [
     link: "https://satvrn.li/windows",
     dateAdded: "2026-05-02",
   },
+  {
+    title: "5 Premium Fonts — Monument Extended",
+    description: "Premium font pack featuring Monument Extended — 5 fonts × 5 weights (Light, Regular, Medium, Bold, Black). 1800 glyphs, multilingual support, OT features. Perfect for bold headlines and branding.",
+    category: "Fonts",
+    image: monumentFontsAsset.url,
+    link: "https://t.me/nextupfilebot?start=BQADAQADpgcAAvAJ6ER-BNviWb-lehYE",
+    dateAdded: "2026-06-01",
+  },
 ];
 
 // All ebooks (will be sorted alphabetically)
