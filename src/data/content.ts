@@ -24,6 +24,8 @@ import funnyViralReelsImg from "@/assets/resources/funny-viral-reels.jpg";
 import ebookDefaultImg from "@/assets/ebooks/ebook-default.jpg";
 import videoEditorEbookImg from "@/assets/ebooks/video-editor-ebook.jpg";
 import vipEbookPackImg from "@/assets/ebooks/vip-ebook-pack.jpg";
+import genAiCourseAsset from "@/assets/ebooks/gen-ai-course.jpg.asset.json";
+import monumentFontsAsset from "@/assets/resources/monument-extended-fonts.jpg.asset.json";
 
 // Import app images
 import freePcGamesImg from "@/assets/apps/free-pc-games.jpg";
@@ -1142,6 +1144,26 @@ const coursesData: Course[] = [
     link: "/collection/placement-material",
     dateAdded: "2026-05-02",
   },
+  {
+    title: "Premium Course Bundle",
+    description: "🖤 Video Editing — Freelance · Content Creator · Editor\n🤖 AI & ChatGPT — AI Expert · Writer · Consultant\n📹 YouTube Creation — YouTuber · Manager · Strategist\n🤎 Social Media — Influencer · Brand Manager\n🎨 Graphic Designing — Designer · Thumbnail",
+    category: "Career",
+    duration: "Self-paced",
+    students: "Curated",
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop",
+    link: "https://t.me/nextupfilebot",
+    dateAdded: "2026-06-01",
+  },
+  {
+    title: "HO'OPONOPONO",
+    description: "Hawaiian healing & forgiveness practice — guided sessions and resources to release emotional blocks and reset your inner state.",
+    category: "Mindset",
+    duration: "Self-paced",
+    students: "Open",
+    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&auto=format&fit=crop",
+    link: "https://t.me/+_WKyz0eY2jAwMTBl",
+    dateAdded: "2026-06-01",
+  },
 ];
 
 // All resources (will be sorted alphabetically)
@@ -1364,6 +1386,14 @@ const resourcesData: Resource[] = [
     link: "https://satvrn.li/windows",
     dateAdded: "2026-05-02",
   },
+  {
+    title: "5 Premium Fonts — Monument Extended",
+    description: "Premium font pack featuring Monument Extended — 5 fonts × 5 weights (Light, Regular, Medium, Bold, Black). 1800 glyphs, multilingual support, OT features. Perfect for bold headlines and branding.",
+    category: "Fonts",
+    image: monumentFontsAsset.url,
+    link: "https://t.me/nextupfilebot?start=BQADAQADpgcAAvAJ6ER-BNviWb-lehYE",
+    dateAdded: "2026-06-01",
+  },
 ];
 
 // All ebooks (will be sorted alphabetically)
@@ -1444,6 +1474,46 @@ const ebooksData: Ebook[] = [
     image: ebookDefaultImg,
     link: "https://t.me/nextupfilebot?start=BQADAQADkQYAAqvnsEcdWlHgXVSG7BYE",
     dateAdded: "2026-05-02",
+  },
+  {
+    title: "Clone Training Script",
+    description: "Complete script and playbook for training a personal AI clone — frameworks, prompts and workflows to replicate your voice and expertise.",
+    category: "AI",
+    image: ebookDefaultImg,
+    link: "https://t.me/nextupfilebot?start=BQADAQADtAcAAvAJ6ETZvw7-lPE7uRYE",
+    dateAdded: "2026-06-01",
+  },
+  {
+    title: "AI Tools to Use Daily",
+    description: "A curated handbook of AI tools to plug into your daily workflow — productivity, writing, design, research and more.",
+    category: "AI",
+    image: ebookDefaultImg,
+    link: "https://t.me/nextupfilebot?start=BQADAQADuwcAAvAJ6ETI_Rq2h9h_SRYE",
+    dateAdded: "2026-06-01",
+  },
+  {
+    title: "Higgsfield Video Prompts",
+    description: "Prompt collection for Higgsfield — cinematic video prompts, motion ideas and templates to produce stunning AI video.",
+    category: "AI",
+    image: ebookDefaultImg,
+    link: "https://t.me/nextupfilebot?start=BQADAQADvAcAAvAJ6ESXhnAmq3mRzxYE",
+    dateAdded: "2026-06-01",
+  },
+  {
+    title: "Video Sample Prompts",
+    description: "Hand-picked sample prompts for AI video generation — angles, motion, styles and scene descriptions ready to copy and use.",
+    category: "AI",
+    image: ebookDefaultImg,
+    link: "https://t.me/nextupfilebot?start=BQADAQADvgcAAvAJ6ERq4ahS54uSGRYE",
+    dateAdded: "2026-06-01",
+  },
+  {
+    title: "Gen AI Course — Be Unstoppable with AI (2025)",
+    description: "Beginner to advanced Generative AI course by Paras Madan (Study IQ Skills). Become unstoppable with practical AI workflows, tools and projects.",
+    category: "AI",
+    image: genAiCourseAsset.url,
+    link: "https://t.me/nextupfilebot?start=BQADAQADoAcAAvAJ8ERgvBx47LIpBhYE",
+    dateAdded: "2026-06-01",
   },
 ];
 
@@ -1827,6 +1897,14 @@ const appsData: App[] = [
     link: "https://gofile.io/d/5WzB4a?utm_source=tg&utm_campaign=pcgames_freedownload&utm_medium=content&utm_term=12159",
     dateAdded: "2026-03-01",
   },
+  {
+    title: "SkyStream",
+    description: "Open-source streaming client for Android — browse, search and play movies and shows from multiple sources. Always the latest GitHub release.",
+    category: "Streaming",
+    image: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=800&auto=format&fit=crop",
+    link: "https://github.com/akashdh11/skystream/releases/latest",
+    dateAdded: "2026-06-01",
+  },
 ];
 
 // Sort by preference utility
@@ -1945,6 +2023,7 @@ export const collections: Collection[] = [
       { title: "GTA Liberty City Stories", description: "Classic prequel with open-world gameplay.", link: "https://dl.apkvision.org/gta-liberty-city-stories/GTA-LCS-v2.4.362-mod-apkvision.apk", badge: "APK" },
       { title: "GTA Chinatown Wars", description: "Top-down GTA with engaging story.", link: "https://dl.apkvision.org/gta-chinatown-wars/GTA-CTW-v4.4.221-full-apkvision.apk", badge: "APK" },
       { title: "GTA III Definitive Edition (PC)", description: "Fully remastered GTA III for PC.", link: "https://gofile.io/d/PK0OMw?utm_source=tg&utm_campaign=pcgames_freedownload&utm_medium=content&utm_term=12159", badge: "PC" },
+      { title: "GTA 3", description: "The original GTA 3 — classic Liberty City open-world chaos.", link: "https://t.me/nextupfilebot?start=BQADAQADkgcAAvAJ6ET3OazFrGZhKxYE", badge: "Telegram" },
     ],
   },
   {
