@@ -1144,6 +1144,26 @@ const coursesData: Course[] = [
     link: "/collection/placement-material",
     dateAdded: "2026-05-02",
   },
+  {
+    title: "Premium Course Bundle",
+    description: "🖤 Video Editing — Freelance · Content Creator · Editor\n🤖 AI & ChatGPT — AI Expert · Writer · Consultant\n📹 YouTube Creation — YouTuber · Manager · Strategist\n🤎 Social Media — Influencer · Brand Manager\n🎨 Graphic Designing — Designer · Thumbnail",
+    category: "Career",
+    duration: "Self-paced",
+    students: "Curated",
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop",
+    link: "https://t.me/nextupfilebot",
+    dateAdded: "2026-06-01",
+  },
+  {
+    title: "HO'OPONOPONO",
+    description: "Hawaiian healing & forgiveness practice — guided sessions and resources to release emotional blocks and reset your inner state.",
+    category: "Mindset",
+    duration: "Self-paced",
+    students: "Open",
+    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&auto=format&fit=crop",
+    link: "https://t.me/+_WKyz0eY2jAwMTBl",
+    dateAdded: "2026-06-01",
+  },
 ];
 
 // All resources (will be sorted alphabetically)
