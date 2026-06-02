@@ -28,6 +28,16 @@ const Resourcly = () => {
     if (open) setTimeout(() => inputRef.current?.focus(), 50);
   }, [open]);
 
+  // Close on Escape
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   const send = async () => {
     const text = input.trim();
     if (!text || loading) return;
@@ -43,6 +53,12 @@ const Resourcly = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: next }),
       });
+      const ct = res.headers.get("content-type") || "";
+      if (!ct.includes("application/json")) {
+        throw new Error(
+          "Chat is only available on the deployed site. Preview environments can't run serverless functions."
+        );
+      }
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || `HTTP ${res.status}`);
       setMessages((m) => [...m, { role: "assistant", content: data.reply || "…" }]);
@@ -67,20 +83,31 @@ const Resourcly = () => {
 
   return (
     <>
-      <button
-        onClick={() => setOpen((o) => !o)}
-        aria-label={open ? "Close Nextup Guide" : "Open Nextup Guide"}
-        className="fixed z-[60] right-4 bottom-[5.5rem] md:bottom-6 w-14 h-14 rounded-full bg-primary text-primary-foreground border-2 border-foreground/80 shadow-pop hover:shadow-pop-hover hover:-translate-y-0.5 hover:-translate-x-0.5 active:translate-y-0.5 active:translate-x-0.5 active:shadow-pop-active transition-all flex items-center justify-center font-heading"
-        style={{ transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)" }}
-      >
-        {open ? <X className="w-6 h-6" strokeWidth={2.5} /> : <MessageCircle className="w-6 h-6" strokeWidth={2.5} />}
-      </button>
+      {!open && (
+        <button
+          onClick={() => setOpen(true)}
+          aria-label="Open Nextup Guide"
+          className="fixed z-[60] right-4 bottom-[5.5rem] md:bottom-6 w-14 h-14 rounded-full bg-primary text-primary-foreground border-2 border-foreground/80 shadow-pop hover:shadow-pop-hover hover:-translate-y-0.5 hover:-translate-x-0.5 active:translate-y-0.5 active:translate-x-0.5 active:shadow-pop-active transition-all flex items-center justify-center font-heading"
+          style={{ transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)" }}
+        >
+          <MessageCircle className="w-6 h-6" strokeWidth={2.5} />
+        </button>
+      )}
 
       {open &&
         createPortal(
-          <div className="fixed z-[59] right-4 bottom-[10.5rem] md:bottom-24 w-[min(380px,calc(100vw-2rem))] h-[min(560px,calc(100vh-12rem))] bg-card border-2 border-foreground/80 rounded-2xl shadow-pop flex flex-col overflow-hidden font-body animate-fade-in-up">
+          <div
+            className="fixed z-[70] right-3 left-3 sm:left-auto sm:right-4 bg-card border-2 border-foreground/80 rounded-2xl shadow-pop flex flex-col overflow-hidden font-body animate-fade-in-up sm:w-[380px]"
+            style={{
+              bottom: "calc(env(safe-area-inset-bottom, 0px) + 5.5rem)",
+              height: "min(560px, calc(100dvh - 8rem))",
+            }}
+            role="dialog"
+            aria-modal="false"
+            aria-label="Nextup Guide chat"
+          >
             {/* Header */}
-            <div className="flex items-center gap-2 px-4 py-3 border-b-2 border-foreground/20 bg-tertiary text-tertiary-foreground">
+            <div className="flex items-center gap-2 px-4 py-3 border-b-2 border-foreground/20 bg-tertiary text-tertiary-foreground shrink-0">
               <div className="w-9 h-9 rounded-full bg-card border-2 border-foreground/80 flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-primary" strokeWidth={2.5} />
               </div>
@@ -95,13 +122,22 @@ const Resourcly = () => {
               >
                 <Trash2 className="w-4 h-4" strokeWidth={2.5} />
               </button>
-              <button onClick={() => setOpen(false)} aria-label="Close" className="p-1.5 rounded-full hover:bg-card/30 transition-colors">
+              <button
+                onClick={() => setOpen(false)}
+                aria-label="Close chat"
+                className="p-1.5 rounded-full hover:bg-card/30 transition-colors"
+              >
                 <X className="w-4 h-4" strokeWidth={2.5} />
               </button>
             </div>
 
             {/* Messages */}
-            <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-3 bg-background">
+            <div
+              ref={scrollRef}
+              aria-live="polite"
+              aria-atomic="false"
+              className="flex-1 overflow-y-auto px-4 py-3 space-y-3 bg-background"
+            >
               {messages.map((m, i) =>
                 m.role === "user" ? (
                   <div key={i} className="flex justify-end">
@@ -126,14 +162,14 @@ const Resourcly = () => {
                 </div>
               )}
               {error && (
-                <div className="text-xs text-destructive font-medium px-2 py-1.5 rounded-lg bg-destructive/10 border-2 border-destructive/40">
+                <div className="text-xs text-destructive font-medium px-3 py-2 rounded-lg bg-destructive/10 border-2 border-destructive/40">
                   {error}
                 </div>
               )}
             </div>
 
             {/* Composer */}
-            <div className="border-t-2 border-foreground/20 p-2.5 bg-card">
+            <div className="border-t-2 border-foreground/20 p-2.5 bg-card shrink-0">
               <div className="flex items-end gap-2">
                 <textarea
                   ref={inputRef}
@@ -142,13 +178,14 @@ const Resourcly = () => {
                   onKeyDown={onKey}
                   rows={1}
                   placeholder="Ask anything about Nextup…"
-                  className="flex-1 resize-none bg-background border-2 border-foreground/20 rounded-xl px-3 py-2 text-sm font-medium text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:border-primary transition-colors max-h-32"
+                  aria-label="Message Nextup Guide"
+                  className="flex-1 resize-none bg-background border-2 border-foreground/30 rounded-xl px-3 py-2 text-sm font-medium text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors max-h-32"
                 />
                 <button
                   onClick={send}
                   disabled={loading || !input.trim()}
-                  aria-label="Send"
-                  className="w-10 h-10 flex-shrink-0 rounded-full bg-primary text-primary-foreground border-2 border-foreground/80 shadow-pop-soft hover:-translate-y-0.5 active:translate-y-0.5 transition-transform flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                  aria-label="Send message"
+                  className="w-10 h-10 flex-shrink-0 rounded-full bg-secondary text-secondary-foreground border-2 border-foreground/80 shadow-pop hover:-translate-y-0.5 hover:-translate-x-0.5 active:translate-y-0.5 active:translate-x-0.5 active:shadow-pop-active transition-all flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:translate-x-0"
                 >
                   <Send className="w-4 h-4" strokeWidth={2.5} />
                 </button>

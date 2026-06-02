@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Sparkles, Download, ArrowRight, BookOpen, Package, Bot, Globe } from "lucide-react";
+import { Sparkles, ArrowRight, BookOpen, Package, Bot, Globe } from "lucide-react";
 import { Link } from "react-router-dom";
 import Stats from "./Stats";
-import { useState, useEffect } from "react";
 import { useTypewriter } from "@/hooks/useTypewriter";
 
 // Confetti shape components
@@ -19,19 +18,10 @@ const ConfettiSquare = ({ className }: { className: string }) => (
 const accentColors = ["text-primary", "text-secondary", "text-tertiary", "text-quaternary"];
 
 const Hero = () => {
-  const [showInstallHint, setShowInstallHint] = useState(false);
   const typewriterText = useTypewriter(["Courses", "Resources", "Ebooks", "Apps & Websites", "AI Tools"], 120, 80, 2000);
 
-  useEffect(() => {
-    const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-    if (!isStandalone) {
-      const timer = setTimeout(() => setShowInstallHint(true), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 dot-grid">
+    <section className="relative min-h-[80vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-24 dot-grid">
       {/* Decorative shapes */}
       <div className="absolute top-20 left-8 w-40 h-40 sm:w-64 sm:h-64 rounded-full bg-tertiary/20 border-2 border-foreground/10 hidden sm:block" />
       <div className="absolute bottom-32 right-12 w-32 h-32 sm:w-48 sm:h-48 rounded-full bg-secondary/15 border-2 border-foreground/10 hidden sm:block" />
@@ -43,7 +33,7 @@ const Hero = () => {
       <ConfettiCircle className="bg-primary/20 bottom-60 right-[15%] hidden lg:block" />
       <ConfettiTriangle className="text-secondary bottom-32 right-[30%] rotate-45 hidden lg:block" />
 
-      <div className="container px-4 py-20 md:py-32 relative z-10">
+      <div className="container px-4 py-10 md:py-32 relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           {/* Welcome Badge */}
           <div className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold bg-card border-2 border-foreground/80 shadow-pop mb-8 animate-fade-in pop-wiggle">
@@ -100,21 +90,8 @@ const Hero = () => {
             ))}
           </div>
 
-          {/* Install PWA hint */}
-          {showInstallHint && (
-            <div className="mt-6 animate-fade-in">
-              <Link
-                to="/install"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold border-2 border-foreground/80 bg-card shadow-pop hover:shadow-pop-hover hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-300 text-muted-foreground hover:text-foreground"
-              >
-                <Download className="h-4 w-4" strokeWidth={2.5} />
-                <span>Install app for offline access</span>
-              </Link>
-            </div>
-          )}
-
           {/* Stats */}
-          <div className="mt-20 w-full animate-fade-in delay-500">
+          <div className="mt-14 md:mt-20 w-full animate-fade-in delay-500">
             <Stats />
           </div>
 
