@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Instagram, Youtube, HelpCircle } from "lucide-react";
+import { Instagram, Youtube, HelpCircle, Download } from "lucide-react";
 import { openIntroModal } from "@/components/IntroModal";
 
 const Footer = () => {
