@@ -81,7 +81,7 @@ const NotificationCenter = () => {
       >
         <Bell className="w-5 h-5" strokeWidth={2.5} />
         {recentItems.length > 0 && (
-          <span className="absolute -top-1 -right-1 w-5 h-5 bg-destructive text-destructive-foreground text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-foreground/80">
+          <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-destructive text-destructive-foreground text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-foreground/80 ring-2 ring-card">
             {recentItems.length > 9 ? "9+" : recentItems.length}
           </span>
         )}
