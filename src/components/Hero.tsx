@@ -43,7 +43,7 @@ const Hero = () => {
       <ConfettiCircle className="bg-primary/20 bottom-60 right-[15%] hidden lg:block" />
       <ConfettiTriangle className="text-secondary bottom-32 right-[30%] rotate-45 hidden lg:block" />
 
-      <div className="container px-4 py-20 md:py-32 relative z-10">
+      <div className="container px-4 py-10 md:py-32 relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           {/* Welcome Badge */}
           <div className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold bg-card border-2 border-foreground/80 shadow-pop mb-8 animate-fade-in pop-wiggle">
