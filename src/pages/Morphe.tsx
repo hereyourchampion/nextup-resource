@@ -38,7 +38,7 @@ function formatSize(bytes: number) {
 }
 
 const Morphe = () => {
-  const { loading, error, apps, latestBuild, totalReleases } = useMorpheReleases();
+  const { loading, error, apps, latestBuild, totalReleases, stale } = useMorpheReleases();
   const [query, setQuery] = useState("");
   const debounced = useDebounced(query, 200);
   const [activeVariant, setActiveVariant] = useState<string>("All");
