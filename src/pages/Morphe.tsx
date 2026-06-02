@@ -135,8 +135,14 @@ const Morphe = () => {
                 )}
                 <span className="px-3 py-1 rounded-full border-2 border-foreground/30 text-muted-foreground inline-flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5" strokeWidth={2.5} />
-                  {apps.length} apps · {totalReleases} releases
+                  {loading ? "Loading latest builds…" : `${apps.length} apps · ${totalReleases} releases`}
                 </span>
+                {stale && !loading && (
+                  <span className="px-3 py-1 rounded-full bg-tertiary text-tertiary-foreground border-2 border-foreground/80 shadow-pop-soft inline-flex items-center gap-1.5">
+                    <RefreshCw className="w-3.5 h-3.5" strokeWidth={2.5} />
+                    Using cached builds
+                  </span>
+                )}
                 <a
                   href="https://nullcpy.github.io/"
                   target="_blank"
