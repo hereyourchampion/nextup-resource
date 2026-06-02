@@ -20,14 +20,15 @@ const Footer = () => {
             </p>
             <div className="flex gap-3">
               {[
-                { href: "https://www.instagram.com/here_your_champion/", icon: Instagram, color: "bg-secondary" },
-                { href: "https://www.youtube.com/@nextupstudioyt", icon: Youtube, color: "bg-destructive" },
-              ].map(({ href, icon: Icon, color }) => (
+                { href: "https://www.instagram.com/here_your_champion/", icon: Instagram, color: "bg-secondary", label: "Instagram" },
+                { href: "https://www.youtube.com/@nextupstudioyt", icon: Youtube, color: "bg-destructive", label: "YouTube" },
+              ].map(({ href, icon: Icon, color, label }) => (
                 <a
                   key={href}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={label}
                   className={`p-3 rounded-full ${color} text-white border-2 border-foreground/80 shadow-pop hover:shadow-pop-hover hover:-translate-x-0.5 hover:-translate-y-0.5 active:shadow-pop-active active:translate-x-0.5 active:translate-y-0.5 transition-all duration-300`}
                 >
                   <Icon className="h-5 w-5" strokeWidth={2.5} />
