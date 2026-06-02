@@ -18,16 +18,7 @@ const ConfettiSquare = ({ className }: { className: string }) => (
 const accentColors = ["text-primary", "text-secondary", "text-tertiary", "text-quaternary"];
 
 const Hero = () => {
-  const [showInstallHint, setShowInstallHint] = useState(false);
   const typewriterText = useTypewriter(["Courses", "Resources", "Ebooks", "Apps & Websites", "AI Tools"], 120, 80, 2000);
-
-  useEffect(() => {
-    const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-    if (!isStandalone) {
-      const timer = setTimeout(() => setShowInstallHint(true), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, []);
 
   return (
     <section className="relative min-h-[80vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-24 dot-grid">
