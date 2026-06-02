@@ -44,8 +44,9 @@ const Header = () => {
               <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-primary border-2 border-foreground/80 shadow-pop transition-all duration-300 ease-bounce group-hover:shadow-pop-hover group-hover:-translate-x-0.5 group-hover:-translate-y-0.5">
                 <span className="text-base sm:text-lg font-extrabold text-primary-foreground font-heading">N</span>
               </div>
-              <span className="text-sm sm:text-lg font-bold text-foreground font-heading">
-                Nextup Resources
+              <span className="hidden xs:inline sm:inline text-sm sm:text-lg font-bold text-foreground font-heading truncate max-w-[140px] sm:max-w-none">
+                <span className="sm:hidden">Nextup</span>
+                <span className="hidden sm:inline">Nextup Resources</span>
               </span>
             </Link>
 
