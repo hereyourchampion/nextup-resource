@@ -31,7 +31,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 dot-grid">
+    <section className="relative min-h-[80vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-24 dot-grid">
       {/* Decorative shapes */}
       <div className="absolute top-20 left-8 w-40 h-40 sm:w-64 sm:h-64 rounded-full bg-tertiary/20 border-2 border-foreground/10 hidden sm:block" />
       <div className="absolute bottom-32 right-12 w-32 h-32 sm:w-48 sm:h-48 rounded-full bg-secondary/15 border-2 border-foreground/10 hidden sm:block" />
