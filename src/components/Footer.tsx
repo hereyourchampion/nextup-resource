@@ -46,6 +46,13 @@ const Footer = () => {
             >
               FAQ
             </Link>
+            <Link
+              to="/install"
+              className="inline-flex items-center gap-1.5 text-muted-foreground text-sm font-bold hover:text-primary transition-colors"
+            >
+              <Download className="w-4 h-4" strokeWidth={2.5} />
+              Install app
+            </Link>
             <button
               type="button"
               onClick={openIntroModal}
