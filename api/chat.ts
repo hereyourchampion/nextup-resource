@@ -1,5 +1,5 @@
-// Vercel serverless function — proxies chat messages to Sarvam AI.
-// Uses SARVAM_API_KEY (server-side only). No streaming for simplicity.
+// Vercel serverless function — proxies chat messages to Lovable AI Gateway.
+// Uses LOVABLE_API_KEY (server-side, auto-provisioned).
 
 interface InMsg {
   role: "user" | "assistant" | "system";
@@ -31,9 +31,9 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const key = process.env.SARVAM_API_KEY;
+    const key = process.env.LOVABLE_API_KEY;
     if (!key) {
-      res.status(500).json({ error: "Server missing SARVAM_API_KEY" });
+      res.status(500).json({ error: "Server missing LOVABLE_API_KEY" });
       return;
     }
 
@@ -44,28 +44,33 @@ export default async function handler(req: any, res: any) {
       return;
     }
 
-    // Strip any client-supplied system prompt; we own it.
     const clean = incoming
       .filter((m) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
       .slice(-20);
 
-    const sarvamRes = await fetch("https://api.sarvam.ai/v1/chat/completions", {
+    const upstream = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "api-subscription-key": key,
+        "Lovable-API-Key": key,
       },
       body: JSON.stringify({
-        model: "sarvam-m",
-        temperature: 0.6,
-        max_tokens: 600,
+        model: "google/gemini-3-flash-preview",
         messages: [{ role: "system", content: SYSTEM_PROMPT }, ...clean],
       }),
     });
 
-    const text = await sarvamRes.text();
-    if (!sarvamRes.ok) {
-      res.status(sarvamRes.status).json({ error: `Sarvam ${sarvamRes.status}`, detail: text.slice(0, 500) });
+    const text = await upstream.text();
+    if (!upstream.ok) {
+      if (upstream.status === 429) {
+        res.status(429).json({ error: "Rate limit reached. Please try again in a moment." });
+        return;
+      }
+      if (upstream.status === 402) {
+        res.status(402).json({ error: "AI credits exhausted. Please top up Lovable AI in workspace settings." });
+        return;
+      }
+      res.status(upstream.status).json({ error: `Lovable AI ${upstream.status}`, detail: text.slice(0, 500) });
       return;
     }
     const data = JSON.parse(text);
