@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { MessageCircle, X, Sparkles, Send, Trash2, Loader2 } from "lucide-react";
+import { MessageCircle, X, Sparkles, Send, Trash2, RefreshCw, AlertCircle } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 type ChatMsg = { role: "user" | "assistant"; content: string };
@@ -38,20 +38,14 @@ const Resourcly = () => {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const send = async () => {
-    const text = input.trim();
-    if (!text || loading) return;
-    const next: ChatMsg[] = [...messages, { role: "user", content: text }];
-    setMessages(next);
-    setInput("");
+  const callApi = useCallback(async (history: ChatMsg[]) => {
     setLoading(true);
     setError(null);
-
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: history }),
       });
       const ct = res.headers.get("content-type") || "";
       if (!ct.includes("application/json")) {
@@ -67,6 +61,23 @@ const Resourcly = () => {
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  const send = async () => {
+    const text = input.trim();
+    if (!text || loading) return;
+    const next: ChatMsg[] = [...messages, { role: "user", content: text }];
+    setMessages(next);
+    setInput("");
+    await callApi(next);
+  };
+
+  const retry = async () => {
+    if (loading) return;
+    // Resend with current history (last message should be a user message)
+    const lastUserIdx = [...messages].reverse().findIndex((m) => m.role === "user");
+    if (lastUserIdx === -1) return;
+    await callApi(messages);
   };
 
   const onKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -81,13 +92,15 @@ const Resourcly = () => {
     setError(null);
   };
 
+  const canRetry = !loading && messages[messages.length - 1]?.role === "user";
+
   return (
     <>
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          aria-label="Open Nextup Guide"
-          className="fixed z-[60] right-4 bottom-[5.5rem] md:bottom-6 w-14 h-14 rounded-full bg-primary text-primary-foreground border-2 border-foreground/80 shadow-pop hover:shadow-pop-hover hover:-translate-y-0.5 hover:-translate-x-0.5 active:translate-y-0.5 active:translate-x-0.5 active:shadow-pop-active transition-all flex items-center justify-center font-heading"
+          aria-label="Open Nextup Guide chat"
+          className="fixed z-[60] right-4 bottom-[5.5rem] md:bottom-6 w-14 h-14 rounded-full bg-primary text-primary-foreground border-2 border-foreground/80 shadow-pop hover:shadow-pop-hover hover:-translate-y-0.5 hover:-translate-x-0.5 active:translate-y-0.5 active:translate-x-0.5 active:shadow-pop-active transition-all flex items-center justify-center font-heading focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           style={{ transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)" }}
         >
           <MessageCircle className="w-6 h-6" strokeWidth={2.5} />
@@ -113,19 +126,21 @@ const Resourcly = () => {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-extrabold font-heading leading-none">Nextup Guide</p>
-                <p className="text-[10px] font-bold opacity-80 mt-0.5">Powered by Sarvam AI</p>
+                <p className="text-[10px] font-bold opacity-80 mt-0.5">Powered by Lovable AI</p>
               </div>
               <button
                 onClick={clear}
-                aria-label="Clear chat"
-                className="p-1.5 rounded-full hover:bg-card/30 transition-colors"
+                aria-label="Clear chat history"
+                title="Clear chat"
+                className="p-1.5 rounded-full hover:bg-card/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground"
               >
                 <Trash2 className="w-4 h-4" strokeWidth={2.5} />
               </button>
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Close chat"
-                className="p-1.5 rounded-full hover:bg-card/30 transition-colors"
+                title="Close"
+                className="p-1.5 rounded-full hover:bg-card/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground"
               >
                 <X className="w-4 h-4" strokeWidth={2.5} />
               </button>
@@ -154,16 +169,32 @@ const Resourcly = () => {
                 )
               )}
               {loading && (
-                <div className="flex justify-start">
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                    <span className="font-medium">Thinking…</span>
+                <div className="flex justify-start" aria-label="Nextup Guide is typing">
+                  <div className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl rounded-bl-sm bg-card border-2 border-foreground/20 shadow-pop-soft">
+                    <span className="w-1.5 h-1.5 rounded-full bg-foreground/70 animate-bounce [animation-delay:-0.3s]"></span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-foreground/70 animate-bounce [animation-delay:-0.15s]"></span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-foreground/70 animate-bounce"></span>
                   </div>
                 </div>
               )}
               {error && (
-                <div className="text-xs text-destructive font-medium px-3 py-2 rounded-lg bg-destructive/10 border-2 border-destructive/40">
-                  {error}
+                <div
+                  role="alert"
+                  className="rounded-xl bg-destructive/10 border-2 border-destructive/40 px-3 py-2.5 space-y-2"
+                >
+                  <div className="flex items-start gap-2 text-xs text-destructive font-medium">
+                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" strokeWidth={2.5} />
+                    <span className="leading-snug">{error}</span>
+                  </div>
+                  {canRetry && (
+                    <button
+                      onClick={retry}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-destructive text-destructive-foreground border-2 border-foreground/80 shadow-pop-soft hover:-translate-y-0.5 active:translate-y-0 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground"
+                    >
+                      <RefreshCw className="w-3.5 h-3.5" strokeWidth={2.5} />
+                      Retry
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -171,21 +202,24 @@ const Resourcly = () => {
             {/* Composer */}
             <div className="border-t-2 border-foreground/20 p-2.5 bg-card shrink-0">
               <div className="flex items-end gap-2">
+                <label htmlFor="nextup-guide-input" className="sr-only">
+                  Message Nextup Guide
+                </label>
                 <textarea
+                  id="nextup-guide-input"
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={onKey}
                   rows={1}
                   placeholder="Ask anything about Nextup…"
-                  aria-label="Message Nextup Guide"
                   className="flex-1 resize-none bg-background border-2 border-foreground/30 rounded-xl px-3 py-2 text-sm font-medium text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors max-h-32"
                 />
                 <button
                   onClick={send}
                   disabled={loading || !input.trim()}
                   aria-label="Send message"
-                  className="w-10 h-10 flex-shrink-0 rounded-full bg-secondary text-secondary-foreground border-2 border-foreground/80 shadow-pop hover:-translate-y-0.5 hover:-translate-x-0.5 active:translate-y-0.5 active:translate-x-0.5 active:shadow-pop-active transition-all flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:translate-x-0"
+                  className="w-10 h-10 flex-shrink-0 rounded-full bg-secondary text-secondary-foreground border-2 border-foreground/80 shadow-pop hover:-translate-y-0.5 hover:-translate-x-0.5 active:translate-y-0.5 active:translate-x-0.5 active:shadow-pop-active transition-all flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:translate-x-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-card"
                 >
                   <Send className="w-4 h-4" strokeWidth={2.5} />
                 </button>

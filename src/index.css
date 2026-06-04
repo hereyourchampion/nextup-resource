@@ -324,6 +324,18 @@
     @apply bg-tertiary text-tertiary-foreground;
   }
 
+  .nav-pill:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+
+  /* Global focus-visible fallback for interactive elements without explicit ring */
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+  }
+
   /* Heart beat animation */
   .heart-beat {
     animation: heartbeat 0.8s var(--bounce);
