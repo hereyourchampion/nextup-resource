@@ -4,10 +4,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BottomNav from "@/components/BottomNav";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Send, ExternalLink, Bot, Sparkles } from "lucide-react";
+import { ArrowLeft, Send, ExternalLink, Bot as BotIcon, Sparkles } from "lucide-react";
 import { updatePageMeta } from "@/lib/og-image";
 
-type Bot = {
+type BotEntry = {
+
   name: string;
   desc: string;
   url: string;
@@ -15,7 +16,7 @@ type Bot = {
   accent: "primary" | "secondary" | "tertiary";
 };
 
-const bots: Bot[] = [
+const bots: BotEntry[] = [
   {
     name: "Fitsman",
     desc: "Grab PC games straight from FitGirl Repacks — search, browse, and download right inside Telegram.",
