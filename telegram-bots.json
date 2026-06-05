@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Fitsman",
+    "desc": "Grab PC games straight from FitGirl Repacks — search, browse, and download right inside Telegram.",
+    "url": "https://t.me/Fitsman_bot",
+    "tag": "PC Games · FitGirl",
+    "accent": "primary"
+  },
+  {
+    "name": "Nextup File Bot",
+    "desc": "Store and share files of any size with a private cloud-style link. Handy for backups and quick transfers.",
+    "url": "https://t.me/nextupfilebot",
+    "tag": "File Storage",
+    "accent": "secondary"
+  }
+]
