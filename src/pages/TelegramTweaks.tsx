@@ -13,7 +13,7 @@ import { updatePageMeta } from "@/lib/og-image";
 // Format: https://raw.githubusercontent.com/shreyagarwal72/nextup-resource/main/telegram-bots.json
 // ─────────────────────────────────────────────────────────────
 const BOTS_JSON_URL =
-  "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/telegram-bots.json";
+  "https://raw.githubusercontent.com/shreyagarwal72/nextup-resource/main/telegram-bots.json";
 
 type BotEntry = {
   name: string;
