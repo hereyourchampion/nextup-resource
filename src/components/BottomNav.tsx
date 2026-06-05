@@ -9,7 +9,9 @@ import {
   Heart,
   Mail,
   Download,
+  Send,
   MoreHorizontal,
+
   Github,
   Zap,
   Briefcase,
@@ -39,8 +41,9 @@ const miscLinks = [
   { to: "/shizuku-apps", icon: Zap, label: "Shizuku" },
   { to: "/morphe", icon: Sparkles, label: "Morphe" },
   { to: "/material-you", icon: Layers, label: "MatYou" },
-  { to: "/special-courses", icon: Briefcase, label: "Placement" },
+  { to: "/telegram-tweaks", icon: Send, label: "Telegram" },
 ];
+
 
 const morePaths = moreLinks.map((l) => l.to);
 const miscPaths = miscLinks.map((l) => l.to);

@@ -2,6 +2,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { MessageCircle, X, Sparkles, Send, Trash2, RefreshCw, AlertCircle } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { supabase } from "@/integrations/supabase/client";
+
 
 type ChatMsg = { role: "user" | "assistant"; content: string };
 
@@ -42,26 +44,19 @@ const Resourcly = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history }),
+      const { data, error: invokeError } = await supabase.functions.invoke("chat", {
+        body: { messages: history },
       });
-      const ct = res.headers.get("content-type") || "";
-      if (!ct.includes("application/json")) {
-        throw new Error(
-          "Chat is only available on the deployed site. Preview environments can't run serverless functions."
-        );
-      }
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || `HTTP ${res.status}`);
-      setMessages((m) => [...m, { role: "assistant", content: data.reply || "…" }]);
+      if (invokeError) throw new Error(invokeError.message);
+      if ((data as any)?.error) throw new Error((data as any).error);
+      setMessages((m) => [...m, { role: "assistant", content: (data as any)?.reply || "…" }]);
     } catch (e: any) {
       setError(e?.message || "Failed to reach Nextup Guide.");
     } finally {
       setLoading(false);
     }
   }, []);
+
 
   const send = async () => {
     const text = input.trim();
