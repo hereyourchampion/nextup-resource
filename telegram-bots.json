@@ -12,5 +12,40 @@
     "url": "https://t.me/nextupfilebot",
     "tag": "File Storage",
     "accent": "secondary"
+  },
+  {
+    "name": "BotFather",
+    "desc": "The official Telegram bot for creating and managing your own bots. Set commands, descriptions, and API tokens — all from chat.",
+    "url": "https://t.me/botfather",
+    "tag": "Official · Bot Dev",
+    "accent": "tertiary"
+  },
+  {
+    "name": "AvaBot",
+    "desc": "An AI-powered personal assistant that answers your questions, helps with tasks, and keeps things conversational.",
+    "url": "https://t.me/spy16_avabot",
+    "tag": "AI Assistant",
+    "accent": "primary"
+  },
+  {
+    "name": "TikTok Downloader",
+    "desc": "Download TikTok videos cleanly — no watermark, no hassle. Just paste the link and get the file.",
+    "url": "https://t.me/downloader_tiktok_bot",
+    "tag": "Downloader · TikTok",
+    "accent": "secondary"
+  },
+  {
+    "name": "Ysaver Bot",
+    "desc": "Download YouTube videos and audio for free. Supports time-coded segments — just add start and end timestamps to the link.",
+    "url": "https://t.me/savefast_bot",
+    "tag": "Downloader · YouTube",
+    "accent": "tertiary"
+  },
+  {
+    "name": "Sukoon Music Bot",
+    "desc": "Search and stream music directly inside Telegram. A clean, no-fuss bot for when you just want to hit play.",
+    "url": "https://t.me/sukoon_music_bot",
+    "tag": "Music",
+    "accent": "primary"
   }
 ]
