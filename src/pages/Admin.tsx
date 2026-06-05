@@ -31,9 +31,10 @@ const Admin = () => {
     updatePageMeta({
       title: "Admin · Nextup Resources",
       description: "Admin-only settings for Nextup Resources.",
-      noIndex: true,
+      url: "/admin",
     });
   }, []);
+
 
   const callAdmin = async (method: "GET" | "POST", payload?: unknown) => {
     const { data, error } = await supabase.functions.invoke("admin-config", {

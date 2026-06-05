@@ -44,8 +44,10 @@ const TelegramTweaks = () => {
       title: "Telegram Tweaks · Secret Bots — Nextup Resources",
       description:
         "A curated list of secret Telegram bots for downloading games, storing files, and discovering more useful tools.",
+      url: "/telegram-tweaks",
     });
   }, []);
+
 
   return (
     <div className="min-h-screen pb-24 md:pb-12 dot-grid">
