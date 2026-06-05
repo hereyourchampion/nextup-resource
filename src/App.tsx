@@ -25,6 +25,9 @@ const FossApps = lazy(() => import("./pages/FossApps"));
 const ShizukuApps = lazy(() => import("./pages/ShizukuApps"));
 const Morphe = lazy(() => import("./pages/Morphe"));
 const MaterialYou = lazy(() => import("./pages/MaterialYou"));
+const TelegramTweaks = lazy(() => import("./pages/TelegramTweaks"));
+const Admin = lazy(() => import("./pages/Admin"));
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -80,7 +83,10 @@ const App = () => {
                 <Route path="/shizuku-apps" element={<ShizukuApps />} />
                 <Route path="/morphe" element={<Morphe />} />
                 <Route path="/material-you" element={<MaterialYou />} />
+                <Route path="/telegram-tweaks" element={<TelegramTweaks />} />
+                <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<NotFound />} />
+
               </Routes>
             </Suspense>
             <IntroModal />
