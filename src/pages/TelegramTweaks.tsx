@@ -87,7 +87,7 @@ const TelegramTweaks = () => {
                     className={`h-11 w-11 rounded-xl border-2 border-foreground/80 ${a.bg} ${a.text} flex items-center justify-center shadow-pop-soft`}
                     aria-hidden
                   >
-                    <Bot className="w-5 h-5" />
+                    <BotIcon className="w-5 h-5" />
                   </div>
                   <span className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground border-2 border-foreground/30 rounded-full px-2 py-0.5">
                     {b.tag}
