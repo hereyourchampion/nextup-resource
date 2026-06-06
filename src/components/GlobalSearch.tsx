@@ -63,7 +63,7 @@ const getIndex = () => (cachedIndex ??= buildIndex());
 const MAX_PER_GROUP = 4;
 const MAX_TOTAL = 24;
 const MAX_SINGLE_GROUP = 20;
-const FILTERS = ["All", "Courses", "Resources", "Ebooks", "Apps", "Websites", "AI Tools", "FOSS", "Shizuku", "Material You"] as const;
+const FILTERS = ["All", "Courses", "Resources", "Ebooks", "Apps", "Websites", "AI Tools", "FOSS", "Shizuku", "Material You", "Telegram"] as const;
 type FilterKey = typeof FILTERS[number];
 
 const GlobalSearch = () => {
