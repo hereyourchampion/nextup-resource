@@ -193,6 +193,8 @@ const RAW: Omit<TelegramBot, "dateAdded">[] = [
   },
 ];
 
+export const telegramBots: TelegramBot[] = RAW.map((b) => ({ ...b, dateAdded: ADDED }));
+
 export const telegramBotCategories = Array.from(
   new Set(telegramBots.map((b) => b.category)),
 ).sort();
