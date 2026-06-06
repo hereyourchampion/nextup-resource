@@ -8,6 +8,7 @@ import { aiTools } from "@/data/aiTools";
 import { fossListApps } from "@/data/fossList";
 import { shizukuApps } from "@/data/shizukuApps";
 import { materialYouApps } from "@/data/materialYouApps";
+import { telegramBots } from "@/data/telegramBots";
 
 interface Hit {
   title: string;
@@ -28,6 +29,7 @@ const groupAccent: Record<string, string> = {
   FOSS: "bg-primary text-primary-foreground",
   Shizuku: "bg-secondary text-secondary-foreground",
   "Material You": "bg-tertiary text-tertiary-foreground",
+  Telegram: "bg-primary text-primary-foreground",
 };
 
 const buildIndex = (): Hit[] => {
@@ -50,6 +52,8 @@ const buildIndex = (): Hit[] => {
     out.push({ title: s.name, subtitle: `${s.author} · ${s.category}`, url: s.url, group: "Shizuku", groupTo: "/shizuku-apps" });
   for (const m of materialYouApps)
     out.push({ title: m.name, subtitle: `${m.author} · ${m.category}`, url: m.url, group: "Material You", groupTo: "/material-you" });
+  for (const b of telegramBots)
+    out.push({ title: b.name, subtitle: `${b.category} · ${b.tag}`, url: b.url, group: "Telegram", groupTo: "/telegram-tweaks" });
   return out;
 };
 
@@ -59,7 +63,7 @@ const getIndex = () => (cachedIndex ??= buildIndex());
 const MAX_PER_GROUP = 4;
 const MAX_TOTAL = 24;
 const MAX_SINGLE_GROUP = 20;
-const FILTERS = ["All", "Courses", "Resources", "Ebooks", "Apps", "Websites", "AI Tools", "FOSS", "Shizuku", "Material You"] as const;
+const FILTERS = ["All", "Courses", "Resources", "Ebooks", "Apps", "Websites", "AI Tools", "FOSS", "Shizuku", "Material You", "Telegram"] as const;
 type FilterKey = typeof FILTERS[number];
 
 const GlobalSearch = () => {
