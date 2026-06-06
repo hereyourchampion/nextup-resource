@@ -1,13 +1,14 @@
 import { useState, useMemo } from "react";
 import { createPortal } from "react-dom";
-import { Bell, X, BookOpen, Package, Smartphone, Clock, Bot, Github, Zap, Sparkles, Layers } from "lucide-react";
+import { Bell, X, BookOpen, Package, Smartphone, Clock, Bot, Github, Zap, Sparkles, Layers, Send } from "lucide-react";
 import { courses, resources, ebooks, apps } from "@/data/content";
 import { aiTools } from "@/data/aiTools";
 import { fossListApps } from "@/data/fossList";
 import { shizukuApps } from "@/data/shizukuApps";
 import { materialYouApps } from "@/data/materialYouApps";
+import { telegramBots } from "@/data/telegramBots";
 
-type ItemType = "course" | "resource" | "ebook" | "app" | "ai-tool" | "foss" | "shizuku" | "morphe" | "material-you";
+type ItemType = "course" | "resource" | "ebook" | "app" | "ai-tool" | "foss" | "shizuku" | "morphe" | "material-you" | "telegram";
 
 interface NotificationItem {
   title: string;
@@ -33,6 +34,7 @@ const NotificationCenter = () => {
     fossListApps.forEach((f: any) => within(f.dateAdded) && items.push({ title: f.name, category: f.category, type: "foss", dateAdded: f.dateAdded, link: f.url }));
     shizukuApps.forEach((s: any) => within(s.dateAdded) && items.push({ title: s.name, category: s.category, type: "shizuku", dateAdded: s.dateAdded, link: s.url }));
     materialYouApps.forEach((m: any) => within(m.dateAdded) && items.push({ title: m.name, category: m.category, type: "material-you", dateAdded: m.dateAdded, link: m.url }));
+    telegramBots.forEach((b) => within(b.dateAdded) && items.push({ title: b.name, category: b.category, type: "telegram", dateAdded: b.dateAdded!, link: b.url }));
 
     return items.sort((a, b) => b.dateAdded.localeCompare(a.dateAdded));
   }, []);
@@ -47,6 +49,7 @@ const NotificationCenter = () => {
       case "shizuku": return <Zap className="w-4 h-4" strokeWidth={2.5} />;
       case "morphe": return <Sparkles className="w-4 h-4" strokeWidth={2.5} />;
       case "material-you": return <Layers className="w-4 h-4" strokeWidth={2.5} />;
+      case "telegram": return <Send className="w-4 h-4" strokeWidth={2.5} />;
       default: return <BookOpen className="w-4 h-4" strokeWidth={2.5} />;
     }
   };
@@ -61,6 +64,7 @@ const NotificationCenter = () => {
       case "shizuku": return "bg-secondary text-secondary-foreground";
       case "morphe": return "bg-secondary text-secondary-foreground";
       case "material-you": return "bg-tertiary text-tertiary-foreground";
+      case "telegram": return "bg-primary text-primary-foreground";
       default: return "bg-secondary text-secondary-foreground";
     }
   };

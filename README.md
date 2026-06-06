@@ -29,8 +29,11 @@ Nextup Resources is a curated learning platform that aggregates high-quality edu
 - **Shizuku Apps** — Power apps that work without root via Shizuku
 - **Morphe Builds** — Live-fetched patched Android builds from `nullcpy/rvb` GitHub releases (12h SWR cache)
 - **Material You Apps** — 1100+ apps designed for Material You, sourced from `nyas1/Material-You-app-list`
+- **Telegram Tweaks** — 20+ hand-picked Telegram bots grouped by category (Downloaders, File Tools, Music, AI & Assistants, Bot Dev & Community, Trading) with an on-page search bar
 - **Placement Material** — Curated company-prep bundles
-- **Global Search** — Search every category from the home page in one place
+- **Global Search** — Fuzzy, multi-field search across every category (titles, categories, tags, descriptions) from the home page, with rich result cards
+- **Nextup Guide Chatbot** — In-app assistant powered by Lovable AI with DeepSeek fallback; keys managed from `/admin`
+- **What's New Inbox** — Bell icon surfacing every item (including Telegram bots) added in the last 30 days
 - **Welcome Intro** — One-time onboarding modal with “Don't show again”, reopenable from the footer
 - **Triple Bottom Nav** — Cycles between Primary → More → Misc menus on mobile
 - **Favorites System** — Bookmark content across all categories with persistent storage
