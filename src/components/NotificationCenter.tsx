@@ -64,6 +64,7 @@ const NotificationCenter = () => {
       case "shizuku": return "bg-secondary text-secondary-foreground";
       case "morphe": return "bg-secondary text-secondary-foreground";
       case "material-you": return "bg-tertiary text-tertiary-foreground";
+      case "telegram": return "bg-primary text-primary-foreground";
       default: return "bg-secondary text-secondary-foreground";
     }
   };
