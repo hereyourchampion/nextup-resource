@@ -49,6 +49,7 @@ const NotificationCenter = () => {
       case "shizuku": return <Zap className="w-4 h-4" strokeWidth={2.5} />;
       case "morphe": return <Sparkles className="w-4 h-4" strokeWidth={2.5} />;
       case "material-you": return <Layers className="w-4 h-4" strokeWidth={2.5} />;
+      case "telegram": return <Send className="w-4 h-4" strokeWidth={2.5} />;
       default: return <BookOpen className="w-4 h-4" strokeWidth={2.5} />;
     }
   };
