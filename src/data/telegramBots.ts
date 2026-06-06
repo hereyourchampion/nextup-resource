@@ -7,11 +7,15 @@ export type TelegramBot = {
   tag: string;
   category: string;
   accent: TelegramBotAccent;
+  dateAdded?: string;
 };
+
+// Default add-date for the freshly curated set — surfaces in What's New.
+const ADDED = "2026-06-06";
 
 // Alphabetical by name. `category` drives grouping on the Telegram Tweaks page
 // and the global search index. Keep this list in sync with telegram-bots.json.
-export const telegramBots: TelegramBot[] = [
+const RAW: Omit<TelegramBot, "dateAdded">[] = [
   {
     name: "Alpha Whale",
     desc:
