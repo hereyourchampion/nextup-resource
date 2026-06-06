@@ -8,6 +8,7 @@ import { aiTools } from "@/data/aiTools";
 import { fossListApps } from "@/data/fossList";
 import { shizukuApps } from "@/data/shizukuApps";
 import { materialYouApps } from "@/data/materialYouApps";
+import { telegramBots } from "@/data/telegramBots";
 
 interface Hit {
   title: string;
