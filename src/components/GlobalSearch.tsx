@@ -9,10 +9,14 @@ import { fossListApps } from "@/data/fossList";
 import { shizukuApps } from "@/data/shizukuApps";
 import { materialYouApps } from "@/data/materialYouApps";
 import { telegramBots } from "@/data/telegramBots";
+import { fuzzyScore } from "@/lib/fuzzy";
 
 interface Hit {
   title: string;
   subtitle?: string;
+  description?: string;
+  tags?: string;
+  category?: string;
   url?: string;
   to?: string;
   group: string;
@@ -35,25 +39,67 @@ const groupAccent: Record<string, string> = {
 const buildIndex = (): Hit[] => {
   const out: Hit[] = [];
   for (const c of courses)
-    out.push({ title: c.title, subtitle: c.category, url: c.link, group: "Courses", groupTo: "/courses" });
+    out.push({ title: c.title, subtitle: c.category, category: c.category, url: c.link, group: "Courses", groupTo: "/courses" });
   for (const r of resources)
-    out.push({ title: r.title, subtitle: r.category, url: r.link, group: "Resources", groupTo: "/resources" });
+    out.push({ title: r.title, subtitle: r.category, category: r.category, url: r.link, group: "Resources", groupTo: "/resources" });
   for (const e of ebooks)
-    out.push({ title: e.title, subtitle: e.category, url: e.link, group: "Ebooks", groupTo: "/ebooks" });
+    out.push({ title: e.title, subtitle: e.category, category: e.category, url: e.link, group: "Ebooks", groupTo: "/ebooks" });
   for (const a of apps)
-    out.push({ title: a.title, subtitle: a.category, url: a.link, group: "Apps", groupTo: "/apps" });
+    out.push({ title: a.title, subtitle: a.category, category: a.category, url: a.link, group: "Apps", groupTo: "/apps" });
   for (const w of websites)
-    out.push({ title: w.title, subtitle: w.category, url: w.link, group: "Websites", groupTo: "/apps" });
+    out.push({ title: w.title, subtitle: w.category, category: w.category, url: w.link, group: "Websites", groupTo: "/apps" });
   for (const t of aiTools)
-    out.push({ title: t.name, subtitle: t.category, url: t.url, group: "AI Tools", groupTo: "/ai" });
+    out.push({
+      title: t.name,
+      subtitle: t.category,
+      description: (t as any).description,
+      tags: Array.isArray((t as any).tags) ? (t as any).tags.join(" ") : undefined,
+      category: t.category,
+      url: t.url,
+      group: "AI Tools",
+      groupTo: "/ai",
+    });
   for (const f of fossListApps)
-    out.push({ title: f.name, subtitle: `${f.author} · ${f.category}`, url: f.url, group: "FOSS", groupTo: "/foss-apps" });
+    out.push({
+      title: f.name,
+      subtitle: `${f.author} · ${f.category}`,
+      description: (f as any).description,
+      category: f.category,
+      url: f.url,
+      group: "FOSS",
+      groupTo: "/foss-apps",
+    });
   for (const s of shizukuApps)
-    out.push({ title: s.name, subtitle: `${s.author} · ${s.category}`, url: s.url, group: "Shizuku", groupTo: "/shizuku-apps" });
+    out.push({
+      title: s.name,
+      subtitle: `${s.author} · ${s.category}`,
+      description: (s as any).description,
+      category: s.category,
+      url: s.url,
+      group: "Shizuku",
+      groupTo: "/shizuku-apps",
+    });
   for (const m of materialYouApps)
-    out.push({ title: m.name, subtitle: `${m.author} · ${m.category}`, url: m.url, group: "Material You", groupTo: "/material-you" });
+    out.push({
+      title: m.name,
+      subtitle: `${m.author} · ${m.category}`,
+      description: (m as any).description,
+      category: m.category,
+      url: m.url,
+      group: "Material You",
+      groupTo: "/material-you",
+    });
   for (const b of telegramBots)
-    out.push({ title: b.name, subtitle: `${b.category} · ${b.tag}`, url: b.url, group: "Telegram", groupTo: "/telegram-tweaks" });
+    out.push({
+      title: b.name,
+      subtitle: `${b.category} · ${b.tag}`,
+      description: b.desc,
+      tags: b.tag,
+      category: b.category,
+      url: b.url,
+      group: "Telegram",
+      groupTo: "/telegram-tweaks",
+    });
   return out;
 };
 
@@ -61,8 +107,8 @@ let cachedIndex: Hit[] | null = null;
 const getIndex = () => (cachedIndex ??= buildIndex());
 
 const MAX_PER_GROUP = 4;
-const MAX_TOTAL = 24;
-const MAX_SINGLE_GROUP = 20;
+const MAX_TOTAL = 28;
+const MAX_SINGLE_GROUP = 24;
 const FILTERS = ["All", "Courses", "Resources", "Ebooks", "Apps", "Websites", "AI Tools", "FOSS", "Shizuku", "Material You", "Telegram"] as const;
 type FilterKey = typeof FILTERS[number];
 
@@ -72,30 +118,34 @@ const GlobalSearch = () => {
   const debounced = useDebounced(query, 150);
 
   const results = useMemo(() => {
-    const q = debounced.trim().toLowerCase();
+    const q = debounced.trim();
     if (q.length < 2) return [] as Hit[];
     const idx = getIndex();
-    const out: Hit[] = [];
 
-    if (filter !== "All") {
-      for (const h of idx) {
-        if (out.length >= MAX_SINGLE_GROUP) break;
-        if (h.group !== filter) continue;
-        const hay = `${h.title} ${h.subtitle ?? ""}`.toLowerCase();
-        if (hay.includes(q)) out.push(h);
-      }
-      return out;
+    // Score every record once
+    const scored: { hit: Hit; score: number }[] = [];
+    for (const h of idx) {
+      if (filter !== "All" && h.group !== filter) continue;
+      const s = fuzzyScore(q, {
+        title: h.title,
+        category: h.category ?? h.subtitle,
+        tags: h.tags,
+        description: h.description,
+      });
+      if (s > 0) scored.push({ hit: h, score: s });
     }
+    scored.sort((a, b) => b.score - a.score);
+
+    if (filter !== "All") return scored.slice(0, MAX_SINGLE_GROUP).map((x) => x.hit);
 
     const perGroup: Record<string, number> = {};
-    for (const h of idx) {
+    const out: Hit[] = [];
+    for (const { hit } of scored) {
       if (out.length >= MAX_TOTAL) break;
-      const hay = `${h.title} ${h.subtitle ?? ""}`.toLowerCase();
-      if (!hay.includes(q)) continue;
-      const c = perGroup[h.group] ?? 0;
+      const c = perGroup[hit.group] ?? 0;
       if (c >= MAX_PER_GROUP) continue;
-      perGroup[h.group] = c + 1;
-      out.push(h);
+      perGroup[hit.group] = c + 1;
+      out.push(hit);
     }
     return out;
   }, [debounced, filter]);
@@ -122,7 +172,7 @@ const GlobalSearch = () => {
               Search everything in one place
             </h2>
             <p className="text-sm text-muted-foreground mt-1">
-              Courses, resources, ebooks, AI tools, FOSS, Shizuku &amp; Material You — all at once.
+              Fuzzy search across courses, resources, ebooks, AI tools, FOSS, Shizuku, Material You &amp; Telegram bots.
             </p>
           </div>
 
@@ -134,7 +184,7 @@ const GlobalSearch = () => {
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search across the entire site…"
+              placeholder="Try “insta”, “gif”, “music bot”, “material you”…"
               aria-label="Global site search"
               className="pl-12 pr-12 h-14 text-base rounded-2xl"
             />
@@ -203,15 +253,39 @@ const GlobalSearch = () => {
                               <li key={`${group}-${i}`}>
                                 <Tag
                                   {...props}
-                                  className="flex items-start gap-3 px-3 py-2 rounded-xl border-2 border-foreground/20 hover:border-foreground/80 hover:bg-background transition-colors"
+                                  className="block px-3 py-2.5 rounded-xl border-2 border-foreground/20 hover:border-foreground/80 hover:bg-background transition-colors"
                                 >
-                                  <span className="font-bold text-sm text-foreground line-clamp-1">
-                                    {h.title}
-                                  </span>
-                                  {h.subtitle && (
-                                    <span className="ml-auto text-xs text-muted-foreground line-clamp-1 shrink-0 max-w-[55%] text-right">
-                                      {h.subtitle}
+                                  <div className="flex items-start gap-3">
+                                    <span className="font-bold text-sm text-foreground line-clamp-1 flex-1 min-w-0">
+                                      {h.title}
                                     </span>
+                                    {h.category && (
+                                      <span className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground border-2 border-foreground/20 rounded-full px-2 py-0.5 shrink-0">
+                                        {h.category}
+                                      </span>
+                                    )}
+                                  </div>
+                                  {h.description && (
+                                    <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
+                                      {h.description}
+                                    </p>
+                                  )}
+                                  {h.tags && (
+                                    <div className="mt-1.5 flex flex-wrap gap-1">
+                                      {h.tags
+                                        .split(/[·•,]/)
+                                        .map((t) => t.trim())
+                                        .filter(Boolean)
+                                        .slice(0, 4)
+                                        .map((t) => (
+                                          <span
+                                            key={t}
+                                            className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-muted text-foreground/80"
+                                          >
+                                            #{t}
+                                          </span>
+                                        ))}
+                                    </div>
                                   )}
                                 </Tag>
                               </li>
