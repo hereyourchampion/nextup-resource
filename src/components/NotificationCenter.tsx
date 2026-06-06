@@ -34,6 +34,7 @@ const NotificationCenter = () => {
     fossListApps.forEach((f: any) => within(f.dateAdded) && items.push({ title: f.name, category: f.category, type: "foss", dateAdded: f.dateAdded, link: f.url }));
     shizukuApps.forEach((s: any) => within(s.dateAdded) && items.push({ title: s.name, category: s.category, type: "shizuku", dateAdded: s.dateAdded, link: s.url }));
     materialYouApps.forEach((m: any) => within(m.dateAdded) && items.push({ title: m.name, category: m.category, type: "material-you", dateAdded: m.dateAdded, link: m.url }));
+    telegramBots.forEach((b) => within(b.dateAdded) && items.push({ title: b.name, category: b.category, type: "telegram", dateAdded: b.dateAdded!, link: b.url }));
 
     return items.sort((a, b) => b.dateAdded.localeCompare(a.dateAdded));
   }, []);
