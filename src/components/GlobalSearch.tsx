@@ -52,6 +52,8 @@ const buildIndex = (): Hit[] => {
     out.push({ title: s.name, subtitle: `${s.author} · ${s.category}`, url: s.url, group: "Shizuku", groupTo: "/shizuku-apps" });
   for (const m of materialYouApps)
     out.push({ title: m.name, subtitle: `${m.author} · ${m.category}`, url: m.url, group: "Material You", groupTo: "/material-you" });
+  for (const b of telegramBots)
+    out.push({ title: b.name, subtitle: `${b.category} · ${b.tag}`, url: b.url, group: "Telegram", groupTo: "/telegram-tweaks" });
   return out;
 };
 
