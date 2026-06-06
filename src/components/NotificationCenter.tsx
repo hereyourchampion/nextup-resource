@@ -1,13 +1,14 @@
 import { useState, useMemo } from "react";
 import { createPortal } from "react-dom";
-import { Bell, X, BookOpen, Package, Smartphone, Clock, Bot, Github, Zap, Sparkles, Layers } from "lucide-react";
+import { Bell, X, BookOpen, Package, Smartphone, Clock, Bot, Github, Zap, Sparkles, Layers, Send } from "lucide-react";
 import { courses, resources, ebooks, apps } from "@/data/content";
 import { aiTools } from "@/data/aiTools";
 import { fossListApps } from "@/data/fossList";
 import { shizukuApps } from "@/data/shizukuApps";
 import { materialYouApps } from "@/data/materialYouApps";
+import { telegramBots } from "@/data/telegramBots";
 
-type ItemType = "course" | "resource" | "ebook" | "app" | "ai-tool" | "foss" | "shizuku" | "morphe" | "material-you";
+type ItemType = "course" | "resource" | "ebook" | "app" | "ai-tool" | "foss" | "shizuku" | "morphe" | "material-you" | "telegram";
 
 interface NotificationItem {
   title: string;
