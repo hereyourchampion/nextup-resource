@@ -16,10 +16,9 @@ type ConfigResponse = {
   env: Record<string, boolean>;
 };
 
-const PW_KEY = "nextup:admin_pw";
-
 const Admin = () => {
-  const [pw, setPw] = useState<string>(() => sessionStorage.getItem(PW_KEY) || "");
+  // Always prompt for the password on each visit — never persist it.
+  const [pw, setPw] = useState<string>("");
   const [authed, setAuthed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [config, setConfig] = useState<ConfigResponse | null>(null);
