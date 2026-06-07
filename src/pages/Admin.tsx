@@ -51,10 +51,8 @@ const Admin = () => {
       const data = (await callAdmin("GET")) as ConfigResponse;
       setConfig(data);
       setAuthed(true);
-      sessionStorage.setItem(PW_KEY, pw);
     } catch (e: any) {
       setAuthed(false);
-      sessionStorage.removeItem(PW_KEY);
       toast.error(e?.message?.includes("401") || /unauth/i.test(e?.message || "")
         ? "Wrong admin password"
         : e?.message || "Failed to load config");
@@ -62,11 +60,6 @@ const Admin = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (pw) loadConfig();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const save = async () => {
     const updates: Record<string, string> = {};
