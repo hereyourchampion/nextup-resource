@@ -16,10 +16,9 @@ type ConfigResponse = {
   env: Record<string, boolean>;
 };
 
-const PW_KEY = "nextup:admin_pw";
-
 const Admin = () => {
-  const [pw, setPw] = useState<string>(() => sessionStorage.getItem(PW_KEY) || "");
+  // Always prompt for the password on each visit — never persist it.
+  const [pw, setPw] = useState<string>("");
   const [authed, setAuthed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [config, setConfig] = useState<ConfigResponse | null>(null);
@@ -52,10 +51,8 @@ const Admin = () => {
       const data = (await callAdmin("GET")) as ConfigResponse;
       setConfig(data);
       setAuthed(true);
-      sessionStorage.setItem(PW_KEY, pw);
     } catch (e: any) {
       setAuthed(false);
-      sessionStorage.removeItem(PW_KEY);
       toast.error(e?.message?.includes("401") || /unauth/i.test(e?.message || "")
         ? "Wrong admin password"
         : e?.message || "Failed to load config");
@@ -63,11 +60,6 @@ const Admin = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (pw) loadConfig();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const save = async () => {
     const updates: Record<string, string> = {};
@@ -239,7 +231,6 @@ const Admin = () => {
                   <Button
                     variant="ghost"
                     onClick={() => {
-                      sessionStorage.removeItem(PW_KEY);
                       setPw("");
                       setAuthed(false);
                       setConfig(null);

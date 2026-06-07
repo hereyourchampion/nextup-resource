@@ -10,12 +10,14 @@ export type TelegramBot = {
   dateAdded?: string;
 };
 
-// Default add-date for the freshly curated set — surfaces in What's New.
-const ADDED = "2026-06-06";
+// Default add-date used when a bot doesn't have its own. Newer bots specify
+// a `dateAdded` directly so "Newest first" sorting and the What's New inbox
+// can surface the most recent additions.
+const ADDED = "2026-06-01";
 
 // Alphabetical by name. `category` drives grouping on the Telegram Tweaks page
 // and the global search index. Keep this list in sync with telegram-bots.json.
-const RAW: Omit<TelegramBot, "dateAdded">[] = [
+const RAW: (Omit<TelegramBot, "dateAdded"> & { dateAdded?: string })[] = [
   {
     name: "Alpha Whale",
     desc:
@@ -193,7 +195,27 @@ const RAW: Omit<TelegramBot, "dateAdded">[] = [
   },
 ];
 
-export const telegramBots: TelegramBot[] = RAW.map((b) => ({ ...b, dateAdded: ADDED }));
+// Newer additions (latest curation batch) — surfaces in "Newest first" sort
+// and the What's New inbox.
+const NEW_BATCH = new Set([
+  "Insta Saver",
+  "Insta Thread Download",
+  "Classical Music",
+  "Group Help Bot",
+  "Alpha Whale",
+  "YT to MP3",
+  "Translation Chatbot",
+  "WonderVerse Bot",
+  "AvaBot",
+  "Eddy Flights",
+  "Flbob",
+]);
+const NEW_DATE = "2026-06-06";
+
+export const telegramBots: TelegramBot[] = RAW.map((b) => ({
+  ...b,
+  dateAdded: b.dateAdded ?? (NEW_BATCH.has(b.name) ? NEW_DATE : ADDED),
+}));
 
 export const telegramBotCategories = Array.from(
   new Set(telegramBots.map((b) => b.category)),

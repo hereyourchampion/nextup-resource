@@ -4,9 +4,12 @@ import Footer from "@/components/Footer";
 import BottomNav from "@/components/BottomNav";
 import SearchBox from "@/components/SearchBox";
 import { Button } from "@/components/ui/button";
-import { Send, ExternalLink, Bot as BotIcon, Sparkles } from "lucide-react";
+import { Send, ExternalLink, Bot as BotIcon, Sparkles, ArrowDownAZ, Clock } from "lucide-react";
 import { updatePageMeta } from "@/lib/og-image";
 import { telegramBots, telegramBotCategories } from "@/data/telegramBots";
+import { useDebounced } from "@/hooks/useDebounced";
+import { highlight } from "@/lib/highlight";
+import { fuzzyScore } from "@/lib/fuzzy";
 
 const accentMap = {
   primary: { bg: "bg-primary", text: "text-primary-foreground" },
@@ -14,8 +17,18 @@ const accentMap = {
   tertiary: { bg: "bg-tertiary", text: "text-tertiary-foreground" },
 } as const;
 
+type SortMode = "category" | "newest";
+
+const splitTags = (tag: string) =>
+  tag
+    .split(/[·•,]/)
+    .map((t) => t.trim())
+    .filter(Boolean);
+
 const TelegramTweaks = () => {
   const [query, setQuery] = useState("");
+  const [sort, setSort] = useState<SortMode>("category");
+  const debounced = useDebounced(query, 150);
 
   useEffect(() => {
     updatePageMeta({
@@ -27,14 +40,34 @@ const TelegramTweaks = () => {
   }, []);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = debounced.trim();
     if (!q) return telegramBots;
-    return telegramBots.filter((b) =>
-      `${b.name} ${b.desc} ${b.tag} ${b.category}`.toLowerCase().includes(q),
-    );
-  }, [query]);
+    // Use the same metadata fields as GlobalSearch for consistent matching.
+    return telegramBots
+      .map((b) => ({
+        b,
+        score: fuzzyScore(q, {
+          title: b.name,
+          category: b.category,
+          tags: b.tag,
+          description: b.desc,
+        }),
+      }))
+      .filter((x) => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map((x) => x.b);
+  }, [debounced]);
+
+  const byNewest = useMemo(
+    () =>
+      [...filtered].sort(
+        (a, b) => (b.dateAdded ?? "").localeCompare(a.dateAdded ?? "") || a.name.localeCompare(b.name),
+      ),
+    [filtered],
+  );
 
   const grouped = useMemo(() => {
+    if (sort === "newest") return [["Newest first", byNewest] as const];
     const map = new Map<string, typeof telegramBots>();
     for (const cat of telegramBotCategories) map.set(cat, []);
     for (const b of filtered) {
@@ -43,8 +76,11 @@ const TelegramTweaks = () => {
     }
     return Array.from(map.entries())
       .filter(([, items]) => items.length > 0)
-      .map(([cat, items]) => [cat, [...items].sort((a, b) => a.name.localeCompare(b.name))] as const);
-  }, [filtered]);
+      .map(
+        ([cat, items]) =>
+          [cat, [...items].sort((a, b) => a.name.localeCompare(b.name))] as const,
+      );
+  }, [filtered, byNewest, sort]);
 
   return (
     <div className="min-h-screen pb-24 md:pb-12 dot-grid">
@@ -63,13 +99,37 @@ const TelegramTweaks = () => {
           </p>
         </header>
 
-        <div className="max-w-2xl mx-auto mb-8">
+        <div className="max-w-2xl mx-auto mb-6">
           <SearchBox
             value={query}
             onChange={setQuery}
             placeholder="Search bots by name, tag or category…"
             ariaLabel="Search Telegram bots"
           />
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+            <span className="text-xs text-muted-foreground font-bold mr-1">Sort:</span>
+            {([
+              { id: "category", label: "By category", icon: ArrowDownAZ },
+              { id: "newest", label: "Newest first", icon: Clock },
+            ] as const).map(({ id, label, icon: Icon }) => {
+              const active = sort === id;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setSort(id)}
+                  aria-pressed={active}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border-2 border-foreground/80 transition-all ${
+                    active
+                      ? "bg-foreground text-background shadow-pop"
+                      : "bg-card text-foreground hover:-translate-y-0.5"
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5" /> {label}
+                </button>
+              );
+            })}
+          </div>
           <p className="mt-2 text-xs text-muted-foreground text-center">
             {filtered.length} of {telegramBots.length} bots
           </p>
@@ -77,7 +137,7 @@ const TelegramTweaks = () => {
 
         {grouped.length === 0 ? (
           <div className="bg-card border-2 border-foreground/40 rounded-2xl p-6 text-center">
-            <p className="font-heading text-lg font-bold mb-1">No bots match "{query}"</p>
+            <p className="font-heading text-lg font-bold mb-1">No bots match "{debounced}"</p>
             <p className="text-sm text-muted-foreground">Try a different keyword or clear the search.</p>
           </div>
         ) : (
@@ -94,6 +154,7 @@ const TelegramTweaks = () => {
                 <div className="grid sm:grid-cols-2 gap-4">
                   {items.map((b) => {
                     const a = accentMap[b.accent] ?? accentMap.primary;
+                    const tags = splitTags(b.tag);
                     return (
                       <article
                         key={b.url}
@@ -101,17 +162,35 @@ const TelegramTweaks = () => {
                       >
                         <div className="flex items-start justify-between gap-3 mb-3">
                           <div
-                            className={`h-11 w-11 rounded-xl border-2 border-foreground/80 ${a.bg} ${a.text} flex items-center justify-center shadow-pop-soft`}
+                            className={`h-11 w-11 rounded-xl border-2 border-foreground/80 ${a.bg} ${a.text} flex items-center justify-center shadow-pop-soft shrink-0`}
                             aria-hidden
                           >
                             <BotIcon className="w-5 h-5" />
                           </div>
-                          <span className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground border-2 border-foreground/30 rounded-full px-2 py-0.5">
-                            {b.tag}
+                          <span
+                            className={`text-[10px] font-bold uppercase tracking-wide border-2 border-foreground/80 rounded-full px-2 py-0.5 ${a.bg} ${a.text}`}
+                          >
+                            {highlight(b.category, debounced)}
                           </span>
                         </div>
-                        <h2 className="font-heading text-xl font-extrabold mb-1">{b.name}</h2>
-                        <p className="text-sm text-muted-foreground flex-1">{b.desc}</p>
+                        <h2 className="font-heading text-xl font-extrabold mb-1">
+                          {highlight(b.name, debounced)}
+                        </h2>
+                        <p className="text-sm text-muted-foreground flex-1">
+                          {highlight(b.desc, debounced)}
+                        </p>
+                        {tags.length > 0 && (
+                          <div className="mt-3 flex flex-wrap gap-1.5">
+                            {tags.map((t) => (
+                              <span
+                                key={t}
+                                className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-muted text-foreground/80 border border-foreground/20"
+                              >
+                                #{highlight(t, debounced)}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                         <Button asChild className="mt-4 w-full" size="default">
                           <a
                             href={b.url}
