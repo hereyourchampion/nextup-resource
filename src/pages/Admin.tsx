@@ -231,7 +231,6 @@ const Admin = () => {
                   <Button
                     variant="ghost"
                     onClick={() => {
-                      sessionStorage.removeItem(PW_KEY);
                       setPw("");
                       setAuthed(false);
                       setConfig(null);
