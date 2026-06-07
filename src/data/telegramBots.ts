@@ -195,7 +195,27 @@ const RAW: (Omit<TelegramBot, "dateAdded"> & { dateAdded?: string })[] = [
   },
 ];
 
-export const telegramBots: TelegramBot[] = RAW.map((b) => ({ ...b, dateAdded: ADDED }));
+// Newer additions (latest curation batch) — surfaces in "Newest first" sort
+// and the What's New inbox.
+const NEW_BATCH = new Set([
+  "Insta Saver",
+  "Insta Thread Download",
+  "Classical Music",
+  "Group Help Bot",
+  "Alpha Whale",
+  "YT to MP3",
+  "Translation Chatbot",
+  "WonderVerse Bot",
+  "AvaBot",
+  "Eddy Flights",
+  "Flbob",
+]);
+const NEW_DATE = "2026-06-06";
+
+export const telegramBots: TelegramBot[] = RAW.map((b) => ({
+  ...b,
+  dateAdded: b.dateAdded ?? (NEW_BATCH.has(b.name) ? NEW_DATE : ADDED),
+}));
 
 export const telegramBotCategories = Array.from(
   new Set(telegramBots.map((b) => b.category)),
