@@ -10,8 +10,10 @@ export type TelegramBot = {
   dateAdded?: string;
 };
 
-// Default add-date for the freshly curated set — surfaces in What's New.
-const ADDED = "2026-06-06";
+// Default add-date used when a bot doesn't have its own. Newer bots specify
+// a `dateAdded` directly so "Newest first" sorting and the What's New inbox
+// can surface the most recent additions.
+const ADDED = "2026-06-01";
 
 // Alphabetical by name. `category` drives grouping on the Telegram Tweaks page
 // and the global search index. Keep this list in sync with telegram-bots.json.
