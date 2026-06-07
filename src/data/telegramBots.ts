@@ -17,7 +17,7 @@ const ADDED = "2026-06-01";
 
 // Alphabetical by name. `category` drives grouping on the Telegram Tweaks page
 // and the global search index. Keep this list in sync with telegram-bots.json.
-const RAW: Omit<TelegramBot, "dateAdded">[] = [
+const RAW: (Omit<TelegramBot, "dateAdded"> & { dateAdded?: string })[] = [
   {
     name: "Alpha Whale",
     desc:
