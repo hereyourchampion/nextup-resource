@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, X, ArrowRight, Sparkles } from "lucide-react";
+import { Search, X, ArrowRight, Sparkles, Clock, Star } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useDebounced } from "@/hooks/useDebounced";
 import { courses, resources, ebooks, apps, websites } from "@/data/content";
@@ -10,6 +10,7 @@ import { shizukuApps } from "@/data/shizukuApps";
 import { materialYouApps } from "@/data/materialYouApps";
 import { telegramBots } from "@/data/telegramBots";
 import { fuzzyScore } from "@/lib/fuzzy";
+import { highlight } from "@/lib/highlight";
 
 interface Hit {
   title: string;
@@ -21,6 +22,7 @@ interface Hit {
   to?: string;
   group: string;
   groupTo: string;
+  dateAdded?: string;
 }
 
 const groupAccent: Record<string, string> = {
@@ -39,21 +41,21 @@ const groupAccent: Record<string, string> = {
 const buildIndex = (): Hit[] => {
   const out: Hit[] = [];
   for (const c of courses)
-    out.push({ title: c.title, subtitle: c.category, category: c.category, url: c.link, group: "Courses", groupTo: "/courses" });
+    out.push({ title: c.title, subtitle: c.category, category: c.category, url: c.link, group: "Courses", groupTo: "/courses", dateAdded: (c as any).dateAdded });
   for (const r of resources)
-    out.push({ title: r.title, subtitle: r.category, category: r.category, url: r.link, group: "Resources", groupTo: "/resources" });
+    out.push({ title: r.title, subtitle: r.category, category: r.category, url: r.link, group: "Resources", groupTo: "/resources", dateAdded: (r as any).dateAdded });
   for (const e of ebooks)
-    out.push({ title: e.title, subtitle: e.category, category: e.category, url: e.link, group: "Ebooks", groupTo: "/ebooks" });
+    out.push({ title: e.title, subtitle: e.category, category: e.category, url: e.link, group: "Ebooks", groupTo: "/ebooks", dateAdded: (e as any).dateAdded });
   for (const a of apps)
-    out.push({ title: a.title, subtitle: a.category, category: a.category, url: a.link, group: "Apps", groupTo: "/apps" });
+    out.push({ title: a.title, subtitle: a.category, category: a.category, url: a.link, group: "Apps", groupTo: "/apps", dateAdded: (a as any).dateAdded });
   for (const w of websites)
-    out.push({ title: w.title, subtitle: w.category, category: w.category, url: w.link, group: "Websites", groupTo: "/apps" });
+    out.push({ title: w.title, subtitle: w.category, category: w.category, url: w.link, group: "Websites", groupTo: "/apps", dateAdded: (w as any).dateAdded });
   for (const t of aiTools)
     out.push({
       title: t.name,
       subtitle: t.category,
       description: (t as any).description,
-      tags: Array.isArray((t as any).tags) ? (t as any).tags.join(" ") : undefined,
+      tags: Array.isArray((t as any).tags) ? (t as any).tags.join(" · ") : undefined,
       category: t.category,
       url: t.url,
       group: "AI Tools",
@@ -99,6 +101,7 @@ const buildIndex = (): Hit[] => {
       url: b.url,
       group: "Telegram",
       groupTo: "/telegram-tweaks",
+      dateAdded: b.dateAdded,
     });
   return out;
 };
@@ -106,23 +109,45 @@ const buildIndex = (): Hit[] => {
 let cachedIndex: Hit[] | null = null;
 const getIndex = () => (cachedIndex ??= buildIndex());
 
+// Tiny LRU-ish cache of scored results keyed by `${filter}::${sort}::${q}`.
+// Keeps fuzzy/partial matching feeling instant while the user types — repeated
+// queries (e.g. backspacing) hit the cache instead of re-scoring every record.
+const resultCache = new Map<string, Hit[]>();
+const CACHE_LIMIT = 40;
+const cacheGet = (k: string) => resultCache.get(k);
+const cacheSet = (k: string, v: Hit[]) => {
+  if (resultCache.has(k)) resultCache.delete(k);
+  resultCache.set(k, v);
+  if (resultCache.size > CACHE_LIMIT) {
+    const first = resultCache.keys().next().value;
+    if (first !== undefined) resultCache.delete(first);
+  }
+};
+
 const MAX_PER_GROUP = 4;
 const MAX_TOTAL = 28;
 const MAX_SINGLE_GROUP = 24;
 const FILTERS = ["All", "Courses", "Resources", "Ebooks", "Apps", "Websites", "AI Tools", "FOSS", "Shizuku", "Material You", "Telegram"] as const;
 type FilterKey = typeof FILTERS[number];
+type SortMode = "relevance" | "newest";
 
 const GlobalSearch = () => {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<FilterKey>("All");
+  const [sort, setSort] = useState<SortMode>("relevance");
   const debounced = useDebounced(query, 150);
 
   const results = useMemo(() => {
     const q = debounced.trim();
     if (q.length < 2) return [] as Hit[];
+    const cacheKey = `${filter}::${sort}::${q.toLowerCase()}`;
+    const cached = cacheGet(cacheKey);
+    if (cached) return cached;
+
     const idx = getIndex();
 
-    // Score every record once
+    // Score every record once using the same metadata fields the Telegram
+    // page filters on (title, category, tags, description).
     const scored: { hit: Hit; score: number }[] = [];
     for (const h of idx) {
       if (filter !== "All" && h.group !== filter) continue;
@@ -134,21 +159,35 @@ const GlobalSearch = () => {
       });
       if (s > 0) scored.push({ hit: h, score: s });
     }
-    scored.sort((a, b) => b.score - a.score);
 
-    if (filter !== "All") return scored.slice(0, MAX_SINGLE_GROUP).map((x) => x.hit);
-
-    const perGroup: Record<string, number> = {};
-    const out: Hit[] = [];
-    for (const { hit } of scored) {
-      if (out.length >= MAX_TOTAL) break;
-      const c = perGroup[hit.group] ?? 0;
-      if (c >= MAX_PER_GROUP) continue;
-      perGroup[hit.group] = c + 1;
-      out.push(hit);
+    if (sort === "newest") {
+      scored.sort((a, b) => {
+        const ad = a.hit.dateAdded ?? "";
+        const bd = b.hit.dateAdded ?? "";
+        if (ad !== bd) return bd.localeCompare(ad);
+        return b.score - a.score;
+      });
+    } else {
+      scored.sort((a, b) => b.score - a.score);
     }
+
+    let out: Hit[];
+    if (filter !== "All") {
+      out = scored.slice(0, MAX_SINGLE_GROUP).map((x) => x.hit);
+    } else {
+      const perGroup: Record<string, number> = {};
+      out = [];
+      for (const { hit } of scored) {
+        if (out.length >= MAX_TOTAL) break;
+        const c = perGroup[hit.group] ?? 0;
+        if (c >= MAX_PER_GROUP) continue;
+        perGroup[hit.group] = c + 1;
+        out.push(hit);
+      }
+    }
+    cacheSet(cacheKey, out);
     return out;
-  }, [debounced, filter]);
+  }, [debounced, filter, sort]);
 
   const grouped = useMemo(() => {
     const m = new Map<string, Hit[]>();
@@ -221,6 +260,30 @@ const GlobalSearch = () => {
                   })}
                 </div>
               </div>
+              <div className="mt-3 flex items-center gap-2 flex-wrap">
+                <span className="text-xs font-bold text-muted-foreground">Sort:</span>
+                {([
+                  { id: "relevance", label: "Best match", icon: Star },
+                  { id: "newest", label: "Newest first", icon: Clock },
+                ] as const).map(({ id, label, icon: Icon }) => {
+                  const active = sort === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => setSort(id)}
+                      aria-pressed={active}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border-2 border-foreground/80 transition-all ${
+                        active
+                          ? "bg-foreground text-background shadow-pop-soft"
+                          : "bg-card text-foreground hover:-translate-y-0.5"
+                      }`}
+                    >
+                      <Icon className="w-3.5 h-3.5" /> {label}
+                    </button>
+                  );
+                })}
+              </div>
               <div className="mt-3 bg-card border-2 border-foreground/80 rounded-2xl shadow-pop p-4 max-h-[60vh] overflow-y-auto">
                 {grouped.length === 0 ? (
                   <p className="text-sm text-muted-foreground text-center py-6">
@@ -249,6 +312,9 @@ const GlobalSearch = () => {
                             const props = h.url
                               ? { href: h.url, target: "_blank", rel: "noopener noreferrer" }
                               : { to: h.to ?? h.groupTo };
+                            const tags = h.tags
+                              ? h.tags.split(/[·•,]/).map((t) => t.trim()).filter(Boolean).slice(0, 4)
+                              : [];
                             return (
                               <li key={`${group}-${i}`}>
                                 <Tag
@@ -257,34 +323,29 @@ const GlobalSearch = () => {
                                 >
                                   <div className="flex items-start gap-3">
                                     <span className="font-bold text-sm text-foreground line-clamp-1 flex-1 min-w-0">
-                                      {h.title}
+                                      {highlight(h.title, debounced)}
                                     </span>
                                     {h.category && (
                                       <span className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground border-2 border-foreground/20 rounded-full px-2 py-0.5 shrink-0">
-                                        {h.category}
+                                        {highlight(h.category, debounced)}
                                       </span>
                                     )}
                                   </div>
                                   {h.description && (
                                     <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
-                                      {h.description}
+                                      {highlight(h.description, debounced)}
                                     </p>
                                   )}
-                                  {h.tags && (
+                                  {tags.length > 0 && (
                                     <div className="mt-1.5 flex flex-wrap gap-1">
-                                      {h.tags
-                                        .split(/[·•,]/)
-                                        .map((t) => t.trim())
-                                        .filter(Boolean)
-                                        .slice(0, 4)
-                                        .map((t) => (
-                                          <span
-                                            key={t}
-                                            className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-muted text-foreground/80"
-                                          >
-                                            #{t}
-                                          </span>
-                                        ))}
+                                      {tags.map((t) => (
+                                        <span
+                                          key={t}
+                                          className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-muted text-foreground/80"
+                                        >
+                                          #{highlight(t, debounced)}
+                                        </span>
+                                      ))}
                                     </div>
                                   )}
                                 </Tag>
