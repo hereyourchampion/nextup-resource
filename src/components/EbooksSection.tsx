@@ -54,7 +54,7 @@ const EbooksSection = () => {
               <p className="text-sm font-extrabold text-foreground font-heading leading-tight group-hover:text-primary transition-colors duration-300">
                 Guru Mann Fitness Books
               </p>
-              <p className="text-xs text-muted-foreground mt-0.5">4 free nutrition plans • Tap to explore</p>
+              <p className="text-xs text-muted-foreground mt-0.5">9 free nutrition plans • Tap to explore</p>
             </div>
             <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 shrink-0" />
           </Link>
