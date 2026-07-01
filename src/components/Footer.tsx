@@ -20,7 +20,7 @@ const Footer = () => {
             </p>
             <div className="flex gap-3">
               {[
-                { href: "https://www.instagram.com/here_your_champion/", icon: Instagram, color: "bg-secondary", label: "Instagram" },
+                { href: "https://www.instagram.com/hereyourchampion/", icon: Instagram, color: "bg-secondary", label: "Instagram" },
                 { href: "https://www.youtube.com/@nextupstudioyt", icon: Youtube, color: "bg-destructive", label: "YouTube" },
               ].map(({ href, icon: Icon, color, label }) => (
                 <a
