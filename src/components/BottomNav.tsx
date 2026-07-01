@@ -47,7 +47,7 @@ const hiddenLinks = [
   { to: "/guru-mann-fitness", icon: Dumbbell, label: "Fitness" },
 ];
 
-const morePaths = moreLinks.map((l) => l.to);
+const morePaths = [...moreLinks.map((l) => l.to), "/guru-mann-fitness-books"];
 const miscPaths = miscLinks.map((l) => l.to);
 const hiddenPaths = hiddenLinks.map((l) => l.to);
 

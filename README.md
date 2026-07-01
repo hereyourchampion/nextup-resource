@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://nextup-resource.vercel.app">Live Site</a> •
-  <a href="https://www.instagram.com/here_your_champion/">Instagram</a> •
+  <a href="https://www.instagram.com/hereyourchampion/">Instagram</a> •
   <a href="https://www.youtube.com/@nextupstudioyt">YouTube</a>
 </p>
 
