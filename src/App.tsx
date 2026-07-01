@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import IntroModal from "@/components/IntroModal";
 import Resourcly from "@/components/Resourcly";
+import { Analytics } from "@vercel/analytics/react";
 
 const Index = lazy(() => import("./pages/Index"));
 const Courses = lazy(() => import("./pages/Courses"));
@@ -96,6 +97,7 @@ const App = () => {
             <IntroModal />
             <Resourcly />
           </BrowserRouter>
+          <Analytics />
         </TooltipProvider>
       </QueryClientProvider>
     </ThemeProvider>
