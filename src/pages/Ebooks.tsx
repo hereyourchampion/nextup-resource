@@ -6,7 +6,8 @@ import BottomNav from "@/components/BottomNav";
 import SquigglyUnderline from "@/components/SquigglyUnderline";
 import { useEffect } from "react";
 import { useStudyMode } from "@/hooks/useStudyMode";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, Dumbbell, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Ebooks = () => {
   const { isStudyMode } = useStudyMode();
