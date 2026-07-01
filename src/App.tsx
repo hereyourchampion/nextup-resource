@@ -27,6 +27,8 @@ const Morphe = lazy(() => import("./pages/Morphe"));
 const MaterialYou = lazy(() => import("./pages/MaterialYou"));
 const TelegramTweaks = lazy(() => import("./pages/TelegramTweaks"));
 const Admin = lazy(() => import("./pages/Admin"));
+const GurMannFitnessBooks = lazy(() => import("./pages/GurMannFitnessBooks"));
+const DeveloperRoadmap = lazy(() => import("./pages/DeveloperRoadmap"));
 
 
 const queryClient = new QueryClient({
