@@ -39,7 +39,7 @@ Nextup Resources is a curated learning platform that aggregates high-quality edu
 - **Favorites System** — Bookmark content across all categories with persistent storage
 - **Study Mode** — Focus-oriented UI with a calming green palette
 - **Dark Mode** — Full light/dark theme support with refined contrast
-- **PWA Support** — Install as a native app on any device for offline access
+- **PWA Support** — Install as a native app on any device for offline access.
 - **Responsive Design** — Mobile-first with adaptive bottom navigation
 
 ## Tech Stack
