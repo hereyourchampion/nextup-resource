@@ -86,6 +86,8 @@ const App = () => {
                 <Route path="/morphe" element={<Morphe />} />
                 <Route path="/material-you" element={<MaterialYou />} />
                 <Route path="/telegram-tweaks" element={<TelegramTweaks />} />
+                <Route path="/guru-mann-fitness" element={<GurMannFitnessBooks />} />
+                <Route path="/developer-roadmap" element={<DeveloperRoadmap />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<NotFound />} />
 
