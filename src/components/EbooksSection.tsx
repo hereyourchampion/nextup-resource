@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import EbookCard from "./EbookCard";
 import { Input } from "@/components/ui/input";
-import { Search, BookText, Dumbbell, ArrowRight } from "lucide-react";
+import { Search, BookText } from "lucide-react";
 import { allEbooks, sortByPreference, groupByCategory } from "@/data/content";
 import { useStudyMode } from "@/hooks/useStudyMode";
 import { useSortPreference } from "@/hooks/useSortPreference";
@@ -41,24 +40,6 @@ const EbooksSection = () => {
             </div>
           </div>
         )}
-
-        <div className="max-w-md mx-auto mb-6 relative">
-          <Link
-            to="/guru-mann-fitness-books"
-            className="group flex items-center gap-4 pop-card px-5 py-4 hover:shadow-pop-hover transition-all duration-300"
-          >
-            <div className="w-11 h-11 rounded-xl bg-primary/20 border-2 border-foreground/80 flex items-center justify-center shrink-0 shadow-pop-soft group-hover:scale-110 transition-transform duration-300">
-              <Dumbbell className="w-5 h-5 text-primary" strokeWidth={2.5} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-extrabold text-foreground font-heading leading-tight group-hover:text-primary transition-colors duration-300">
-                Guru Mann Fitness Books
-              </p>
-              <p className="text-xs text-muted-foreground mt-0.5">9 free nutrition plans • Tap to explore</p>
-            </div>
-            <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 shrink-0" />
-          </Link>
-        </div>
 
         <div className="max-w-md mx-auto mb-12 relative">
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
