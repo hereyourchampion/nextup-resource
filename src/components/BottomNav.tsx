@@ -6,19 +6,18 @@ import {
   Bot,
   Globe,
   BookText,
-  Heart,
   Mail,
   Download,
   Send,
   MoreHorizontal,
-
   Github,
   Zap,
   Briefcase,
   Sparkles,
   Layers,
+  Map,
+  Dumbbell,
 } from "lucide-react";
-import { useFavorites } from "@/hooks/useFavorites";
 
 const primaryLinks = [
   { to: "/", icon: Home, label: "Home" },
@@ -30,7 +29,7 @@ const primaryLinks = [
 
 const moreLinks = [
   { to: "/ebooks", icon: BookText, label: "Ebooks" },
-  { to: "/favorites", icon: Heart, label: "Favorites" },
+  { to: "/developer-roadmap", icon: Map, label: "Roadmap" },
   { to: "/special-courses", icon: Briefcase, label: "Placement" },
   { to: "/contact", icon: Mail, label: "Contact" },
   { to: "/install", icon: Download, label: "Install" },
@@ -44,9 +43,13 @@ const miscLinks = [
   { to: "/telegram-tweaks", icon: Send, label: "Telegram" },
 ];
 
+const hiddenLinks = [
+  { to: "/guru-mann-fitness", icon: Dumbbell, label: "Fitness" },
+];
 
 const morePaths = moreLinks.map((l) => l.to);
 const miscPaths = miscLinks.map((l) => l.to);
+const hiddenPaths = hiddenLinks.map((l) => l.to);
 
 const NavItem = ({
   to,
@@ -61,19 +64,23 @@ const NavItem = ({
   label: string;
   active: boolean;
   badge?: number;
-  accent?: "primary" | "secondary" | "tertiary";
+  accent?: "primary" | "secondary" | "tertiary" | "quaternary";
 }) => {
   const textCls =
     accent === "secondary"
       ? "text-secondary"
       : accent === "tertiary"
       ? "text-tertiary"
+      : accent === "quaternary"
+      ? "text-quaternary"
       : "text-primary";
   const bgCls =
     accent === "secondary"
       ? "bg-secondary"
       : accent === "tertiary"
       ? "bg-tertiary"
+      : accent === "quaternary"
+      ? "bg-quaternary"
       : "bg-primary";
   return (
   <Link
@@ -105,107 +112,127 @@ const NavItem = ({
 const BottomNav = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { totalCount } = useFavorites();
 
   const isActive = (path: string) => location.pathname === path;
   const isOnMorePage = morePaths.includes(location.pathname);
   const isOnMiscPage =
     miscPaths.includes(location.pathname) ||
     location.pathname.startsWith("/collection/");
+  const isOnHiddenPage = hiddenPaths.includes(location.pathname);
 
-  // Misc nav (3rd ring) — toggle goes back to primary (Home)
-  if (isOnMiscPage) {
-    return (
-      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
-        <div className="mx-2 mb-2 bg-card border-2 border-foreground/80 rounded-2xl shadow-pop">
-          <div
-            className="flex items-center justify-around px-1 py-1.5"
-            style={{ paddingBottom: "max(0.375rem, env(safe-area-inset-bottom))" }}
-          >
-            {miscLinks.map((link) => (
-              <NavItem
-                key={link.to}
-                to={link.to}
-                icon={link.icon}
-                label={link.label}
-                active={isActive(link.to)}
-                accent="tertiary"
-              />
-            ))}
-            <button
-              onClick={() => navigate("/")}
-              aria-label="Switch to main menu"
-              className="flex flex-col items-center justify-center px-2 py-1.5 rounded-xl transition-all duration-200 text-muted-foreground"
-            >
-              <MoreHorizontal className="w-5 h-5" strokeWidth={2} />
-            </button>
-          </div>
-        </div>
-      </nav>
-    );
-  }
+  // On desktop, only show bottom nav when the user is in a secondary/misc/hidden ring,
+  // since the primary links live in the header already.
+  const desktopClass = isOnMorePage || isOnMiscPage || isOnHiddenPage ? "" : "md:hidden";
 
-  // Secondary nav — toggle goes to misc (FOSS)
-  if (isOnMorePage) {
-    return (
-      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
-        <div className="mx-2 mb-2 bg-card border-2 border-foreground/80 rounded-2xl shadow-pop">
-          <div
-            className="flex items-center justify-around px-1 py-1.5"
-            style={{ paddingBottom: "max(0.375rem, env(safe-area-inset-bottom))" }}
-          >
-            {moreLinks.map((link) => (
-              <NavItem
-                key={link.to}
-                to={link.to}
-                icon={link.icon}
-                label={link.label}
-                active={isActive(link.to)}
-                badge={link.to === "/favorites" ? totalCount : undefined}
-                accent="secondary"
-              />
-            ))}
-            <button
-              onClick={() => navigate("/foss-apps")}
-              aria-label="Switch to extras menu"
-              className="flex flex-col items-center justify-center px-2 py-1.5 rounded-xl transition-all duration-200 text-muted-foreground"
-            >
-              <MoreHorizontal className="w-5 h-5" strokeWidth={2} />
-            </button>
-          </div>
-        </div>
-      </nav>
-    );
-  }
-
-  // Primary nav — toggle goes to secondary (Ebooks)
-  return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
-      <div className="mx-2 mb-2 bg-card border-2 border-foreground/80 rounded-2xl shadow-pop">
+  const shell = (children: React.ReactNode) => (
+    <nav className={`fixed bottom-0 left-0 right-0 z-50 ${desktopClass}`}>
+      <div className="mx-2 md:mx-auto md:max-w-2xl mb-2 md:mb-4 bg-card border-2 border-foreground/80 rounded-2xl shadow-pop">
         <div
           className="flex items-center justify-around px-1 py-1.5"
           style={{ paddingBottom: "max(0.375rem, env(safe-area-inset-bottom))" }}
         >
-          {primaryLinks.map((link) => (
-            <NavItem
-              key={link.to}
-              to={link.to}
-              icon={link.icon}
-              label={link.label}
-              active={isActive(link.to)}
-              accent="primary"
-            />
-          ))}
-          <button
-            onClick={() => navigate("/ebooks")}
-            aria-label="Switch to more menu"
-            className="flex flex-col items-center justify-center px-2 py-1.5 rounded-xl transition-all duration-200 text-muted-foreground"
-          >
-            <MoreHorizontal className="w-5 h-5" strokeWidth={2} />
-          </button>
+          {children}
         </div>
       </div>
     </nav>
+  );
+
+  // Hidden nav (4th ring) — toggle goes back to primary
+  if (isOnHiddenPage) {
+    return shell(
+      <>
+        {hiddenLinks.map((link) => (
+          <NavItem
+            key={link.to}
+            to={link.to}
+            icon={link.icon}
+            label={link.label}
+            active={isActive(link.to)}
+            accent="quaternary"
+          />
+        ))}
+        <button
+          onClick={() => navigate("/")}
+          aria-label="Back to main menu"
+          className="flex flex-col items-center justify-center px-2 py-1.5 rounded-xl text-muted-foreground"
+        >
+          <MoreHorizontal className="w-5 h-5" strokeWidth={2} />
+        </button>
+      </>
+    );
+  }
+
+  // Misc nav (3rd ring) — toggle goes to hidden ring
+  if (isOnMiscPage) {
+    return shell(
+      <>
+        {miscLinks.map((link) => (
+          <NavItem
+            key={link.to}
+            to={link.to}
+            icon={link.icon}
+            label={link.label}
+            active={isActive(link.to)}
+            accent="tertiary"
+          />
+        ))}
+        <button
+          onClick={() => navigate("/guru-mann-fitness")}
+          aria-label="Switch to hidden menu"
+          className="flex flex-col items-center justify-center px-2 py-1.5 rounded-xl text-muted-foreground"
+        >
+          <MoreHorizontal className="w-5 h-5" strokeWidth={2} />
+        </button>
+      </>
+    );
+  }
+
+  // Secondary nav — toggle goes to misc
+  if (isOnMorePage) {
+    return shell(
+      <>
+        {moreLinks.map((link) => (
+          <NavItem
+            key={link.to}
+            to={link.to}
+            icon={link.icon}
+            label={link.label}
+            active={isActive(link.to)}
+            accent="secondary"
+          />
+        ))}
+        <button
+          onClick={() => navigate("/foss-apps")}
+          aria-label="Switch to extras menu"
+          className="flex flex-col items-center justify-center px-2 py-1.5 rounded-xl text-muted-foreground"
+        >
+          <MoreHorizontal className="w-5 h-5" strokeWidth={2} />
+        </button>
+      </>
+    );
+  }
+
+  // Primary nav — toggle goes to secondary (Ebooks)
+  return shell(
+    <>
+      {primaryLinks.map((link) => (
+        <NavItem
+          key={link.to}
+          to={link.to}
+          icon={link.icon}
+          label={link.label}
+          active={isActive(link.to)}
+          accent="primary"
+        />
+      ))}
+      <button
+        onClick={() => navigate("/ebooks")}
+        aria-label="Switch to more menu"
+        className="flex flex-col items-center justify-center px-2 py-1.5 rounded-xl text-muted-foreground"
+      >
+        <MoreHorizontal className="w-5 h-5" strokeWidth={2} />
+      </button>
+    </>
   );
 };
 

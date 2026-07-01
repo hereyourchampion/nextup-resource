@@ -27,6 +27,8 @@ const Morphe = lazy(() => import("./pages/Morphe"));
 const MaterialYou = lazy(() => import("./pages/MaterialYou"));
 const TelegramTweaks = lazy(() => import("./pages/TelegramTweaks"));
 const Admin = lazy(() => import("./pages/Admin"));
+const GurMannFitnessBooks = lazy(() => import("./pages/GurMannFitnessBooks"));
+const DeveloperRoadmap = lazy(() => import("./pages/DeveloperRoadmap"));
 
 
 const queryClient = new QueryClient({
@@ -84,6 +86,8 @@ const App = () => {
                 <Route path="/morphe" element={<Morphe />} />
                 <Route path="/material-you" element={<MaterialYou />} />
                 <Route path="/telegram-tweaks" element={<TelegramTweaks />} />
+                <Route path="/guru-mann-fitness" element={<GurMannFitnessBooks />} />
+                <Route path="/developer-roadmap" element={<DeveloperRoadmap />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<NotFound />} />
 

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { Heart } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { StudyModeToggle } from "./StudyModeToggle";
 import { useFavorites } from "@/hooks/useFavorites";
@@ -24,7 +25,7 @@ const Header = () => {
     { to: "/ebooks", label: "Ebooks" },
     { to: "/apps", label: "Apps & Websites" },
     { to: "/ai", label: "AI" },
-    { to: "/favorites", label: "Favorites" },
+    { to: "/developer-roadmap", label: "Roadmap" },
     { to: "/contact", label: "Contact" },
   ];
 
@@ -73,6 +74,22 @@ const Header = () => {
             </nav>
 
             <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+              <Link
+                to="/favorites"
+                aria-label={`Favorites${totalCount > 0 ? ` (${totalCount})` : ""}`}
+                title="Favorites"
+                className="relative w-10 h-10 rounded-full border-2 border-foreground/80 bg-card shadow-pop flex items-center justify-center hover:bg-primary/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <Heart
+                  className={`w-4 h-4 ${totalCount > 0 ? "text-primary fill-primary" : "text-foreground"}`}
+                  strokeWidth={2.5}
+                />
+                {totalCount > 0 && (
+                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-destructive text-destructive-foreground text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-foreground/80 animate-pop-in">
+                    {totalCount > 9 ? "9+" : totalCount}
+                  </span>
+                )}
+              </Link>
               <NotificationCenter />
               <StudyModeToggle />
               <ThemeToggle />
