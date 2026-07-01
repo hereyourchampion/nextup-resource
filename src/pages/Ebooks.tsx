@@ -6,7 +6,8 @@ import BottomNav from "@/components/BottomNav";
 import SquigglyUnderline from "@/components/SquigglyUnderline";
 import { useEffect } from "react";
 import { useStudyMode } from "@/hooks/useStudyMode";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, Dumbbell, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Ebooks = () => {
   const { isStudyMode } = useStudyMode();
@@ -38,6 +39,28 @@ const Ebooks = () => {
                   : "Download premium ebooks completely free."}
               </p>
             </div>
+          </div>
+        </section>
+        <section className="pb-6">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <Link
+              to="/guru-mann-fitness"
+              className="group block pop-card overflow-hidden bg-gradient-to-r from-primary/10 via-secondary/10 to-tertiary/10"
+            >
+              <div className="flex items-center gap-4 p-5">
+                <div className="w-14 h-14 rounded-2xl bg-primary border-2 border-foreground/80 shadow-pop flex items-center justify-center text-2xl shrink-0">
+                  <Dumbbell className="w-6 h-6 text-primary-foreground" strokeWidth={2.5} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-xs font-bold text-primary uppercase tracking-wider mb-0.5">Exclusive Collection</div>
+                  <h3 className="text-lg sm:text-xl font-extrabold font-heading leading-tight">Guru Mann Fitness Books</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-1">Nutrition & training ebooks for bulking, cutting and lean physiques.</p>
+                </div>
+                <div className="hidden sm:flex items-center gap-1 text-sm font-bold text-primary shrink-0">
+                  Explore <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" strokeWidth={2.5} />
+                </div>
+              </div>
+            </Link>
           </div>
         </section>
         <EbooksSection />
